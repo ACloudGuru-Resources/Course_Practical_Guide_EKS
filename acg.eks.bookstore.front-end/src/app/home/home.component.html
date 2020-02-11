@@ -1,0 +1,115 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="header">
+                        
+                        <button type="button" data-toggle="modal" data-target="#newModal" data-backdrop="false" (click)="new_click()" class="btn btn-success m-b-xs">New +</button>
+
+                    </div>
+                    <div class="content table-responsive table-full-width">
+                          <table class="table table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th *ngFor="let cell of tableData.headerRow">{{ cell }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let row of tableData.dataRows">
+                                        <td>{{row._id}}</td>
+                                        <td>{{row.Name}}</td>
+                                        <td>{{row.Author}}</td>
+                                        <td>{{row.Type}}</td>
+                                        <td>{{row.DateOfPublication}}</td>
+                                        <td><button type="button" (click)="register(row._id)" data-backdrop="false" class="btn btn-success">Register <i class="fa fa-pencil"></i></button></td>
+                                        <td><button type="button" data-toggle="modal" data-target="#newModal" (click)="update_click(row)" data-backdrop="false" class="btn btn-info">Edit <i class="fa fa-pencil"></i></button></td>
+                                        <td><button type="button" data-toggle="modal" data-target="#deleteModal" (click)="delete_click(row._id)" data-backdrop="false" class="btn btn-danger">Delete <i class="fa fa-close"></i></button></td>
+                                    </tr>
+                                </tbody>
+                          </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="newModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+      
+            <!-- Modal Header -->
+            <div class="modal-header">
+            <h4 class="modal-title">{{titleModal}}</h4>              
+            </div>
+      
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form novalidate [formGroup]="formGroup">
+                       <div class="row">
+                            <div class="form-group col-xs-12">
+                               <label for="name">Name:</label>
+                               <input type="text" formControlName="Name" class="form-control" placeholder="Name">
+                            </div>
+                            <div class="form-group col-xs-12">
+                               <label for="DateOfPublication">Date Of Publication:</label>
+                               <input type="text" formControlName="DateOfPublication" class="form-control" placeholder="Date Of Publication">
+                            </div>
+                            <div class="form-group col-xs-12">
+                               <label for="Author">Author:</label>
+                               <input type="text" formControlName="Author" class="form-control" placeholder="Author">
+                            </div>
+                            <div class="form-group col-xs-12">
+                                  <label for="Tags">Tags:</label>
+                                  <tag-input formControlName="Tags" name="Tags" [modelAsStrings]="true"></tag-input>
+                            </div>
+                            <div class="form-group col-xs-12">
+                               <label for="Type">Type:</label>
+                               <input type="text" formControlName="Type" class="form-control" placeholder="Type">
+                            </div>
+                            <div class="form-group col-xs-12">
+                               <label for="Description">Description:</label>
+                               <input type="text" formControlName="Description" class="form-control" placeholder="Description">
+                            </div>
+                       </div>
+                </form>
+            </div>
+      
+            <!-- Modal footer -->
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" (click)="process_()" data-dismiss="modal">Ok</button>
+              <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+      
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <div class="modal" id="deleteModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+      
+            <!-- Modal Header -->
+            <div class="modal-header">
+            <h4 class="modal-title">{{titleModal}}</h4>              
+            </div>
+      
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="row">
+                <h5 class="text-center">Are you sure?</h5>
+                </div>
+            </div>
+      
+            <!-- Modal footer -->
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" (click)="delete()" data-dismiss="modal">Ok</button>
+              <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+      
+            </div>
+          </div>
+        </div>
+      </div>
+
+</div>

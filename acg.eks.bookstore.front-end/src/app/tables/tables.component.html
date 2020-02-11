@@ -1,0 +1,45 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="header">
+                        <div class="form-group">
+                            <div class="input-group">
+                              <div class="input-group-addon search-addon">
+                                <i class="fa fa-search"></i>
+                              </div>
+                              <input
+                                type="text"
+                                class="form-control"
+                                name="searchString"
+                                placeholder="Type to search..."
+                                [(ngModel)]="searchString"
+                              />
+                            </div>
+                          </div>
+                    </div>
+                    <div class="content table-responsive table-full-width">
+                          <table class="table table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th *ngFor="let cell of tableData.headerRow">{{ cell }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let row of tableData.dataRows | filter : 'ResourceName' : searchString; let i = index">
+                                        <td>{{row.ResourceId}}</td>
+                                        <td>{{row.ResourceName}}</td>
+                                        <td>{{row.AvailableCopies}}</td>
+                                        <td>{{row.UnavailableCopies}}</td>
+                                        <td>{{row.TotalCopies}}</td>
+                                    </tr>
+                                </tbody>
+                          </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

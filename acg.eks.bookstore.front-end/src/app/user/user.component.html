@@ -1,0 +1,229 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="header">
+                        
+                        <button type="button" data-toggle="modal" data-target="#newModal" data-backdrop="false" (click)="new_click()" class="btn btn-success m-b-xs">New +</button>
+                        
+                        <div class="form-group">
+                          <div class="input-group padding-top">
+                            <div class="input-group-addon search-addon">
+                              <i class="fa fa-search"></i>
+                            </div>
+                            <input
+                              type="text"
+                              class="form-control"
+                              name="searchString"
+                              placeholder="Type to search..."
+                              [(ngModel)]="searchString"
+                            />
+                          </div>
+                        </div>
+                    </div>
+                    <div class="content table-responsive table-full-width">
+                          <table class="table table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th *ngFor="let cell of tableData.headerRow">{{ cell }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let row of tableData.dataRows | filter : 'Name' : searchString; let i = index">
+                                        <td>{{row._id}}</td>
+                                        <td>{{row.Name}}</td>
+                                        <td>{{row.Email}}</td>
+                                        <td><button type="button" data-toggle="modal" data-target="#newModal" (click)="update_click(row)" data-backdrop="false" class="btn btn-info">Edit <i class="fa fa-pencil"></i></button></td>
+                                        <td><button type="button" data-toggle="modal" data-target="#rentingModal" (click)="renting_click(row._id)" data-backdrop="false" class="btn btn-secondary">Renting <i class="fa fa-file-text"></i></button></td> 
+                                        <td><button type="button" data-toggle="modal" data-target="#returnModal" (click)="return_click(row._id)" data-backdrop="false" class="btn btn-warning">Return <i class="fa fa-undo"></i></button></td>                          
+                                    </tr>
+                                </tbody>
+                          </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="newModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+      
+            <!-- Modal Header -->
+            <div class="modal-header">
+            <h4 class="modal-title">{{titleModal}}</h4>              
+            </div>
+      
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form novalidate [formGroup]="formGroup">
+                       <div class="row">
+                            <div class="form-group col-xs-12">
+                               <label for="name">Name:</label>
+                               <input type="text" formControlName="Name" class="form-control" placeholder="Name">
+                            </div>
+                            <div class="form-group col-xs-12">
+                               <label for="Email">Email:</label>
+                               <input type="text" formControlName="Email" class="form-control" placeholder="Email">
+                            </div>
+                       </div>
+                </form>
+            </div>
+      
+            <!-- Modal footer -->
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" (click)="process_()" data-dismiss="modal">Ok</button>
+              <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+      
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <div class="modal" id="deleteModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+      
+            <!-- Modal Header -->
+            <div class="modal-header">
+            <h4 class="modal-title">{{titleModal}}</h4>              
+            </div>
+      
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="row">
+                <h5 class="text-center">Are you sure?</h5>
+                </div>
+            </div>
+      
+            <!-- Modal footer -->
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" (click)="delete()" data-dismiss="modal">Ok</button>
+              <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+      
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <div class="modal" id="rentingModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+    
+          <!-- Modal Header -->
+          <div class="modal-header">
+          <h4 class="modal-title">{{titleModal}}</h4>              
+          </div>
+    
+          <!-- Modal body -->
+          <div class="modal-body">
+              <form novalidate [formGroup]="rentingGroup">
+                     <div class="row">
+                          <div class="form-group col-xs-12">
+                             <label>Resource:</label>
+                             <select formControlName="ResourceId" class="form-control">
+                                <option *ngFor="let resource of resourcesList_; let i = index;" async [value]="resource._id" [selected]="i === 0">
+                                  {{resource.Name}}
+                                </option>
+                             </select>
+                          </div>
+                          <div class="form-group col-xs-12">
+                            <label>Date:</label>
+                            <ng-datepicker [(ngModel)]="date" formControlName="RegistrationDate" [headless]="false" [options]="options"></ng-datepicker>
+                          </div>
+                     </div>
+              </form>
+          </div>
+    
+          <!-- Modal footer -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" (click)="renting()" data-dismiss="modal">Ok</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+    
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" id="returnModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+    
+          <!-- Modal Header -->
+          <div class="modal-header">
+          <h4 class="modal-title">{{titleModal}}</h4>              
+          </div>
+    
+          <!-- Modal body -->
+          <div class="modal-body">
+              <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="content table-responsive table-full-width">
+                              <table class="table table-hover table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                              Resource   
+                                            </th>
+                                            <th>
+                                              Registration Date   
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let row of rentingList">
+                                            <td>{{row.ResourceName}}</td>
+                                            <td>{{row.RegistrationDate}}</td>
+                                            <td><button type="button" data-toggle="modal" data-target="#dateModal" (click)="return_date_click(row._id)" data-backdrop="false" class="btn btn-info" data-dismiss="modal">Return <i class="fa fa-undo"></i></button></td>                                        
+                                          </tr>
+                                    </tbody>
+                              </table>
+    
+                        </div>
+                    </div>
+                </div>
+            </div>
+          </div>
+    
+          <!-- Modal footer -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+    
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" id="dateModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+    
+          <!-- Modal Header -->
+          <div class="modal-header">
+          <h4 class="modal-title">{{titleModal}}</h4>              
+          </div>
+    
+          <!-- Modal body -->
+          <div class="modal-body">
+            <div class="row">
+              <div class="form-group col-xs-12">
+                <label>Date:</label>
+                <ng-datepicker [(ngModel)]="date" [headless]="false" [options]="options"></ng-datepicker>
+              </div>
+            </div>
+          </div>
+    
+          <!-- Modal footer -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" (click)="return()" data-dismiss="modal">Ok</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+    
+          </div>
+        </div>
+      </div>
+    </div>
+
+</div>

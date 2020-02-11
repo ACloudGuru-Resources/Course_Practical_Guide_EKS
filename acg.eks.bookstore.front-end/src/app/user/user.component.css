@@ -1,0 +1,21 @@
+.search-addon { 
+    background-color: indianred;
+    color:white;
+    border: 1px solid darkgrey;
+}
+
+.padding-top { 
+    padding-top: 10px;
+}
+
+.form-control[readonly] {
+    background-color: transparent !important;
+    color: black !important;
+    cursor: pointer !important;
+}
+
+#datepicker-0 { 
+    background-color: transparent !important;
+    color: black !important;
+    cursor: pointer !important;
+}

@@ -1,0 +1,10 @@
+{
+	"Name": "EKS course",
+	"DateOfPublication": "2020",
+	"Author": "Mario Mercado",
+	"Tags": [
+		"aws", "kubernetes", "cloud", "devops"
+	],
+	"Type": "DVD",
+	"Description": "This is an amazing course, I think..."
+}

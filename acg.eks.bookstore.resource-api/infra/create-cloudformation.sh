@@ -1,0 +1,13 @@
+namespace=$1
+
+if [ -z "${namespace}" ]
+then
+    echo "Missing the 'Namespace' parameter. Taking the default one which is 'development'"
+    namespace="development"
+fi
+
+aws cloudformation create-stack \
+    --stack-name ${namespace}-resource-api-dynamodb-table \
+    --template-body file://./dynamodb-table.json \
+    --parameters \
+        ParameterKey=Namespace,ParameterValue=${namespace}

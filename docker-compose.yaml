@@ -1,0 +1,58 @@
+version: '3'
+services:
+  resources-api:
+    build: ./acg.eks.bookstore.resource-api/src
+    ports:
+      - "5000:5000"
+    environment:
+      DYNAMODB_TABLE: development-resources
+      AWS_DEFAULT_REGION: us-east-2
+      AWS_ACCESS_KEY_ID: <access-key-id-here>
+      AWS_SECRET_ACCESS_KEY: <secret-access-key-here>
+  inventory-api:
+    build: ./acg.eks.bookstore.inventory-api/src
+    ports:
+      - 5001:5001
+    links:
+      - resources-api
+    environment:
+      DYNAMODB_TABLE: development-inventory
+      RESOURCE_API_ENDPOINT: http://resources-api:5000
+      AWS_DEFAULT_REGION: us-east-2
+      AWS_ACCESS_KEY_ID: <access-key-id-here>
+      AWS_SECRET_ACCESS_KEY: <secret-access-key-here>
+  proxy:
+    image: nginx:stable-alpine
+    ports: 
+      - 80:80
+    depends_on:
+      - resources-api
+      - inventory-api
+      - front-end
+    volumes:
+      - ./default.conf:/etc/nginx/conf.d/default.conf
+  front-end:
+    build: ./acg.eks.bookstore.front-end
+    ports:
+      - "5002:80"
+
+  clients-api:
+    build: ./acg.eks.bookstore.clients-api/src
+    ports: 
+      - "5003:5003"
+    environment:
+      AWS_DEFAULT_REGION: us-east-2
+      AWS_ACCESS_KEY_ID: <access-key-id-here>
+      AWS_SECRET_ACCESS_KEY: <secret-access-key-here>
+
+  renting-api:
+    build: ./acg.eks.bookstore.renting-api/api
+    ports:
+      - "5004:3000"
+    environment:
+      AWS_DEFAULT_REGION: us-east-2
+      AWS_ACCESS_KEY_ID: <access-key-id-here>
+      AWS_SECRET_ACCESS_KEY: <secret-access-key-here>
+      DYNAMODB_TABLE: development-renting
+      INVENTORY_API_ENDPOINT: http://inventory-api:5001
+      CLIENTS_API_ENDPOINT: http://clients-api:5003

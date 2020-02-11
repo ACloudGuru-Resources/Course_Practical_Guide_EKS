@@ -1,0 +1,23 @@
+{
+  "name": "acg.eks.bookstore.inventory-api",
+  "version": "1.0.0",
+  "description": "Inventory API for EKS course in ACG",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://git-codecommit.us-east-2.amazonaws.com/v1/repos/acg.eks.bookstore.inventory-api"
+  },
+  "author": "Mario Mercado",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^3.1.1",
+    "aws-sdk": "^2.610.0",
+    "express": "^4.17.1",
+    "morgan": "^1.9.1",
+    "request": "^2.88.0",
+    "uuid": "^3.4.0"
+  }
+}
