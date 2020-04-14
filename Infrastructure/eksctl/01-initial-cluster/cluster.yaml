@@ -12,3 +12,4 @@ nodeGroups:
   - name: eks-node-group
     instanceType: t2.micro
     desiredCapacity: 3
+    privateNetworking: true
