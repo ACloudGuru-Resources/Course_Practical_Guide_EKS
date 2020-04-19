@@ -1,0 +1,52 @@
+{
+"AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "The IAM Resources for External DNS",
+    "Parameters": {
+        "DeployRole": {
+            "Description": "Decide whether deploy or not the IAM Role",
+            "Type": "String",
+            "Default": "no",
+            "AllowedValues": [
+                "yes",
+                "no"
+            ]
+        }
+    },
+    "Conditions": {
+        "CreateIamRole": { "Fn::Equals": [ { "Ref": "DeployRole" }, "yes"] }
+    },
+    "Resources": {
+        
+        "ExternalDnsIamPolicy": {
+            "Type": "AWS::IAM::ManagedPolicy",
+            "Properties": {
+                "PolicyDocument" : {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Action": [
+                                "route53:ChangeResourceRecordSets"
+                            ],
+                            "Resource": [
+                                "arn:aws:route53:::hostedzone/*"
+                            ]
+                        },
+                        {
+                            "Effect": "Allow",
+                            "Action": [
+                                "route53:ListHostedZones",
+                                "route53:ListResourceRecordSets"
+                            ],
+                            "Resource": [
+                                "*"
+                            ]
+                        }
+                    ]
+                },
+                "ManagedPolicyName" : "ExternalDNSPolicy"
+            }
+        }
+        
+    }
+}
