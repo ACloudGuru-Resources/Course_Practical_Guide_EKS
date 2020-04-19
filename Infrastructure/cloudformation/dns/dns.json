@@ -1,0 +1,70 @@
+{
+"AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "Hosted Zone and ACM Certificate",
+    "Parameters": {
+        "Environment": {
+            "Description": "The environment this hosted zone belongs to",
+            "Type": "String",
+            "Default": "production",
+            "AllowedValues": [
+                "development",
+                "production"
+            ]
+        },
+        "DomainName": {
+            "Description": "The domain name",
+            "Type": "String",
+            "Default": "mariomerco.com"
+        },
+        "DeployHostedZone": {
+            "Description": "Define whether deploy the hosted zone or not",
+            "Type": "String",
+            "Default": "no",
+            "AllowedValues": [
+                "yes",
+                "no"
+            ]
+        }
+    },
+    "Conditions": {
+        "CreateHostedZone": { "Fn::Equals": [{"Ref": "DeployHostedZone"}, "yes"]}
+    },
+    "Resources": {
+        "HostedZone": {
+            "Type": "AWS::Route53::HostedZone",
+            "Condition": "CreateHostedZone",
+            "Properties": {
+                "Name": { "Ref": "DomainName" },
+                "HostedZoneConfig": {
+                    "Comment": { "Fn::Sub": "Hosted zone supporting the domain ${DomainName} for the ${Environment} environment." }
+                },
+                "HostedZoneTags": [
+                    {
+                        "Key": "Environment",
+                        "Value": { "Ref": "Environment" }
+                    }
+                ]
+            }
+        },
+        "Certificate": {
+            "Type" : "AWS::CertificateManager::Certificate",
+            "Properties" : {
+                "DomainName" : { "Fn::Sub": "*.${DomainName}" },
+                "SubjectAlternativeNames" : [ 
+                    { "Fn::Sub" : "${DomainName}" }
+                ],
+                "Tags" : [ 
+                    {
+                        "Key": "Environment",
+                        "Value": { "Ref": "Environment" }
+                    },
+                    {
+                        "Key": "Name",
+                        "Value": { "Ref": "DomainName" }
+                    }
+                ],
+                "ValidationMethod" : "DNS"
+            } 
+        }
+    }
+}
