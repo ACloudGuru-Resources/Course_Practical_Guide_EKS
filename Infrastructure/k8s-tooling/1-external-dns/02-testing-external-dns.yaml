@@ -3,12 +3,18 @@ kind: Service
 metadata:
   name: nginx
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: testing-external-dns.dev.mariomerco.com
+    external-dns.alpha.kubernetes.io/hostname: app.yourdns.com
+    service.beta.kubernetes.io/aws-load-balancer-ssl-cert: arn:aws:acm:{region}:{account}:certificate/{id}
+    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http
+    service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "https"
 spec:
   type: LoadBalancer
   ports:
   - port: 80
     name: http
+    targetPort: 80
+  - port: 443
+    name: https
     targetPort: 80
   selector:
     app: nginx
