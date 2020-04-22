@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ .Values.service.name }}-proxy-config
+  name: {{ template "acg-front-end.fullname" . }}-proxy-config
   namespace: {{ .Release.Namespace }}
 data:
   default.conf: |

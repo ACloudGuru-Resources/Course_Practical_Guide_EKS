@@ -21,9 +21,9 @@ spec:
         release: {{ .Release.Name }}
     spec:
       volumes:
-      - name: {{ .Values.service.name }}-proxy-config
+      - name: {{ template "acg-front-end.fullname" . }}-proxy-config
         configMap:
-          name: {{ .Values.service.name }}-proxy-config
+          name: {{ template "acg-front-end.fullname" . }}-proxy-config
       containers:
         - name: {{ .Chart.Name }}-proxy
           image: "nginx"
@@ -33,6 +33,6 @@ spec:
               containerPort: {{ .Values.service.port }}
               protocol: TCP
           volumeMounts:
-            - name: {{ template "acg-front-end.name" . }}-proxy
+            - name: {{ template "acg-front-end.fullname" . }}-proxy-config
               mountPath: /etc/nginx/conf.d/default.conf
               subPath: default.conf
