@@ -5,13 +5,13 @@
 replicaCount: 1
 
 image:
-  repository: nginx
-  tag: stable
+  repository: mariomerco/clients-api
+  tag: latest
   pullPolicy: IfNotPresent
 
 service:
   type: LoadBalancer
-  port: 80
+  port: 5003
 
 resources: {}
   # limits:
