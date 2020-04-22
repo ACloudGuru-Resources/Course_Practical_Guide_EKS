@@ -35,6 +35,8 @@ spec:
               value: http://inventory-api-service
             - name: CLIENTS_API_ENDPOINT
               value: http://clients-api-service
+            - name: AWS_REGION
+              value: {{ .Values.aws.region }}
           resources:
 {{ toYaml .Values.resources | indent 12 }}
     {{- with .Values.nodeSelector }}

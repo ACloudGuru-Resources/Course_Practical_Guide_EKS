@@ -14,6 +14,9 @@ service:
   port: 5004
   name: renting-api-service
 
+aws:
+  region: us-east-2
+
 resources: {}
   # limits:
   #  cpu: 100m
