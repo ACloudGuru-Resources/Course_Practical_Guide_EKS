@@ -1,0 +1,38 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ template "acg-front-end.fullname" . }}-proxy
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ template "acg-front-end.name" . }}-proxy
+    chart: {{ template "acg-front-end.chart" . }}-proxy
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}-proxy
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "acg-front-end.name" . }}-proxy
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "acg-front-end.name" . }}-proxy
+        release: {{ .Release.Name }}
+    spec:
+      volumes:
+      - name: {{ .Values.service.name }}-proxy-config
+        configMap:
+          name: {{ .Values.service.name }}-proxy-config
+      containers:
+        - name: {{ .Chart.Name }}-proxy
+          image: "nginx"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          volumeMounts:
+            - name: {{ template "acg-front-end.name" . }}-proxy
+              mountPath: /etc/nginx/conf.d/default.conf
+              subPath: default.conf
