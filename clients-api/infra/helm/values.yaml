@@ -12,6 +12,7 @@ image:
 service:
   type: LoadBalancer
   port: 5003
+  name: clients-api-service
 
 resources: {}
   # limits:

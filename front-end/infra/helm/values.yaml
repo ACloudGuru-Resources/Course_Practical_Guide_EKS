@@ -12,6 +12,7 @@ image:
 service:
   type: LoadBalancer
   port: 80
+  name: front-end-service
 
 resources: {}
   # limits:

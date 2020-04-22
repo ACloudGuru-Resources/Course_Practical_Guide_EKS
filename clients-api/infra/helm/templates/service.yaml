@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "acg-clients-api.fullname" . }}
+  name: {{ .Values.service.name }}
   namespace: {{ .Release.Namespace }}
   labels:
     app: {{ template "acg-clients-api.name" . }}

@@ -1,7 +1,7 @@
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
-  name: {{ template "acg-inventory-api.fullname" . }}
+  name: {{ .Values.service.name }}
   namespace: {{ .Release.Namespace }}
   labels:
     app: {{ template "acg-inventory-api.name" . }}
@@ -31,6 +31,8 @@ spec:
           env:
             - name: DYNAMODB_TABLE 
               value: {{ .Release.Namespace }}-inventory
+            - name: RESOURCE_API_ENDPOINT
+              value: http://resource-api-service
           resources:
 {{ toYaml .Values.resources | indent 12 }}
     {{- with .Values.nodeSelector }}

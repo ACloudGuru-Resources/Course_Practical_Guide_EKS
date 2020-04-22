@@ -12,6 +12,7 @@ image:
 service:
   type: LoadBalancer
   port: 5001
+  name: inventory-api-service
 
 resources: {}
   # limits:
