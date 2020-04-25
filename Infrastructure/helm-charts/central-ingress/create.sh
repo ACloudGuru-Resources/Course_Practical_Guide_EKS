@@ -1,0 +1,1 @@
+helm upgrade --install --namespace development -f values.development.yaml central-ingress .

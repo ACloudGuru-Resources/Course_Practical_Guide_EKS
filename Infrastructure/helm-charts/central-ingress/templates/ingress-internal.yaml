@@ -1,0 +1,28 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ template "central-ingress.name" . }}-internal
+  labels:
+    app: {{ template "central-ingress.name" . }}-internal
+    chart: {{ template "central-ingress.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+{{- with .Values.ingress.internal.annotations }}
+  annotations:
+{{ toYaml . | indent 4 }}
+{{- end }}
+spec:
+  rules:
+  {{- range .Values.ingress.internal.hosts }}
+    - host: {{ .hostname }}
+      http:
+        paths:
+          - path: /*
+            backend:
+              serviceName: redirect
+              servicePort: use-annotation
+          - path: /*
+            backend:
+              serviceName: {{ .serviceName }}
+              servicePort: {{ .port }}
+  {{- end }}
