@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: mariomerco/front-end
-  tag: latest
+  tag: dev
   pullPolicy: IfNotPresent
 
 service:
