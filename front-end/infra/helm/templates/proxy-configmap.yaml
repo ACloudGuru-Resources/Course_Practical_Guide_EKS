@@ -13,7 +13,7 @@ data:
             proxy_pass http://front-end-service/;
         }
         location /resources-api/ {
-            proxy_pass http://resources-api-service/;
+            proxy_pass http://resource-api-service/;
         }
         location /inventory-api/ {
             proxy_pass http://inventory-api-service/;
