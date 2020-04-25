@@ -1,0 +1,15 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: eks-acg
+  region: us-east-2
+
+vpc:
+  cidr: 10.0.0.0/16
+
+nodeGroups:
+  - name: eks-node-group
+    instanceType: t2.medium
+    desiredCapacity: 3
+    privateNetworking: true
