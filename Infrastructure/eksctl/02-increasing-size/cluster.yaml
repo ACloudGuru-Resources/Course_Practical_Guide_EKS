@@ -9,7 +9,7 @@ vpc:
   cidr: 10.0.0.0/16
 
 nodeGroups:
-  - name: eks-node-group
+  - name: eks-node-group-v2
     instanceType: t2.medium
     desiredCapacity: 3
     privateNetworking: true
