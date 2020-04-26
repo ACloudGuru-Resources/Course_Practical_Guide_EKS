@@ -1,0 +1,1 @@
+helm upgrade --install --namespace development front-end-development .

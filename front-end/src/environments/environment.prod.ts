@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
-  resourceApi: "https://resource-api.mariomerco.com",
-  inventoryApi: "https://inventory-api.mariomerco.com",
-  clientApi: "https://client-api.mariomerco.com",
-  rentingApi: "https://renting-api.mariomerco.com" 
+  resourceApi: "https://api.mariomerco.com/resources-api",
+  inventoryApi: "https://api.mariomerco.com/inventory-api",
+  clientApi: "https://api.mariomerco.com/clients-api",
+  rentingApi: "https://api.mariomerco.com/renting-api" 
 };

@@ -1,0 +1,33 @@
+ingress:
+  internal:
+    annotations: 
+      kubernetes.io/ingress.class: alb
+      alb.ingress.kubernetes.io/scheme: internal
+      alb.ingress.kubernetes.io/actions.redirect: "{\"Type\": \"redirect\", \"RedirectConfig\": {\"Protocol\": \"HTTPS\", \"Port\": \"443\", \"StatusCode\": \"HTTP_301\"}}"
+      alb.ingress.kubernetes.io/listen-ports: "[{\"HTTP\":80,\"HTTPS\": 443}]"
+      alb.ingress.kubernetes.io/load-balancer-attributes: "idle_timeout.timeout_seconds=360"
+    path: /
+    hosts:
+      - hostname: renting-api.dev.mariomerco.com
+        serviceName: renting-api-service
+        port: 80
+      
+      - hostname: resource-api.dev.mariomerco.com
+        serviceName: resource-api-service
+        port: 80
+      
+      - hostname: inventory-api.dev.mariomerco.com
+        serviceName: inventory-api-service
+        port: 80
+
+      - hostname: clients-api.dev.mariomerco.com
+        serviceName: clients-api-service
+        port: 80
+
+      - hostname: bookstore.dev.mariomerco.com
+        serviceName: front-end-service
+        port: 80
+
+      - hostname: api.dev.mariomerco.com
+        serviceName: front-end-service-proxy
+        port: 80

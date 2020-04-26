@@ -1,0 +1,30 @@
+{{- if .Values.ingress.external }}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ template "central-ingress.name" . }}-external
+  labels:
+    app: {{ template "central-ingress.name" . }}-external
+    chart: {{ template "central-ingress.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+{{- with .Values.ingress.external.annotations }}
+  annotations:
+{{ toYaml . | indent 4 }}
+{{- end }}
+spec:
+  rules:
+  {{- range .Values.ingress.external.hosts }}
+    - host: {{ .hostname }}
+      http:
+        paths:
+          - path: /*
+            backend:
+              serviceName: redirect
+              servicePort: use-annotation
+          - path: /*
+            backend:
+              serviceName: {{ .serviceName }}
+              servicePort: {{ .port }}
+  {{- end }}
+{{- end }}
