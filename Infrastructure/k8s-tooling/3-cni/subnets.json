@@ -1,0 +1,137 @@
+{
+"AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "Creates secondary subnets for an existing VPC to be used in a customized CNI withing EKS. NOTE: The VPC should have a secondary CIDR.",
+    "Metadata": {
+
+    },
+    "Parameters": {
+        "Region": {
+            "Description": "The AWS Region",
+            "Type": "String",
+            "Default": "us-east-2"
+        },
+        
+        "VPCID": {
+            "Description": "The VPC where the Subnets will be created",
+            "Type": "AWS::EC2::VPC::Id"
+        },
+
+        
+        "EKSClusterName": {
+            "Description": "The name of the EKS Cluster",
+            "Type": "String",
+            "Default": "eks-acg"
+        },
+
+        "SubnetACidr": {
+            "Description": "The CIDR of the Subnet in AZ A",
+            "Type": "String",
+            "Default": "100.64.0.0/19"
+        },
+        "SubnetBCidr": {
+            "Description": "The CIDR of the Subnet in AZ A",
+            "Type": "String",
+            "Default": "100.64.32.0/19"
+        },
+        "SubnetCCidr": {
+            "Description": "The CIDR of the Subnet in AZ A",
+            "Type": "String",
+            "Default": "100.64.64.0/19"
+        }
+    },
+    "Resources": {
+        
+        "SubnetA": {
+            "Type": "AWS::EC2::Subnet",
+            "Properties": {
+                "AvailabilityZone": { "Fn::Sub": "${Region}a" },
+                "VpcId": { "Ref": "VPCID" },
+                "CidrBlock": { "Ref": "SubnetACidr" },
+                "Tags": [
+                    {
+                        "Key": "alpha.eksctl.io/cluster-name",
+                        "Value": { "Ref": "EKSClusterName"}
+                    },
+                    {
+                        "Key": "eksctl.cluster.k8s.io/v1alpha1/cluster-name",
+                        "Value": { "Ref": "EKSClusterName"}
+                    },
+                    {
+                        "Key": { "Fn::Sub": "kubernetes.io/cluster/${EKSClusterName}" },
+                        "Value": "shared"
+                    },
+                    {
+                        "Key": "kubernetes.io/role/internal-elb",
+                        "Value": "1"
+                    }
+                ]
+            }
+        },
+        "SubnetB": {
+            "Type": "AWS::EC2::Subnet",
+            "Properties": {
+                "AvailabilityZone": { "Fn::Sub": "${Region}b" },
+                "VpcId": { "Ref": "VPCID" },
+                "CidrBlock": { "Ref": "SubnetBCidr" },
+                "Tags": [
+                    {
+                        "Key": "alpha.eksctl.io/cluster-name",
+                        "Value": { "Ref": "EKSClusterName"}
+                    },
+                    {
+                        "Key": "eksctl.cluster.k8s.io/v1alpha1/cluster-name",
+                        "Value": { "Ref": "EKSClusterName"}
+                    },
+                    {
+                        "Key": { "Fn::Sub": "kubernetes.io/cluster/${EKSClusterName}" },
+                        "Value": "shared"
+                    },
+                    {
+                        "Key": "kubernetes.io/role/internal-elb",
+                        "Value": "1"
+                    }
+                ]
+            }
+        },
+        "SubnetC": {
+            "Type": "AWS::EC2::Subnet",
+            "Properties": {
+                "AvailabilityZone": { "Fn::Sub": "${Region}c" },
+                "VpcId": { "Ref": "VPCID" },
+                "CidrBlock": { "Ref": "SubnetCCidr" },
+                "Tags": [
+                    {
+                        "Key": "alpha.eksctl.io/cluster-name",
+                        "Value": { "Ref": "EKSClusterName"}
+                    },
+                    {
+                        "Key": "eksctl.cluster.k8s.io/v1alpha1/cluster-name",
+                        "Value": { "Ref": "EKSClusterName"}
+                    },
+                    {
+                        "Key": { "Fn::Sub": "kubernetes.io/cluster/${EKSClusterName}" },
+                        "Value": "shared"
+                    },
+                    {
+                        "Key": "kubernetes.io/role/internal-elb",
+                        "Value": "1"
+                    }
+                ]
+            }
+        }
+        
+    },
+    "Outputs": {
+        
+        "SubnetIdA" : {
+            "Value" : { "Ref": "SubnetA"}
+        },
+        "SubnetIdB" : {
+            "Value" : { "Ref": "SubnetB"}
+        },
+        "SubnetIdC" : {
+            "Value" : { "Ref": "SubnetC"}
+        }
+        
+    }
+}
