@@ -1,0 +1,46 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+        "Description": "Renting API IAM Policy",
+        "Parameters": {
+            "Namespace": {
+                "Description": "The namespace which this table belongs to",
+                "Type": "String",
+                "Default": "development"
+            }
+        },
+        "Resources": {
+            "IamPolicy": {
+                "Type": "AWS::IAM::ManagedPolicy",
+                "Properties": {
+                    "PolicyDocument" : {
+                        "Version": "2012-10-17",
+                        "Statement": [
+                            {
+                                "Effect": "Allow",
+                                "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:DescribeTable",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:Query",
+                                    "dynamodb:UpdateItem"
+                                ],
+                                "Resource": [
+                                    { "Fn::Sub": "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${Namespace}-renting" },
+                                    { "Fn::Sub": "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${AWS::AccountId}/index/*"}
+                                ]
+                            }
+                        ]
+                    },
+                    "ManagedPolicyName" : { "Fn::Sub": "${Namespace}-RentingApiPolicy" }
+                }
+            }
+        },
+        "Outputs": {
+            "IamPolicyArn" : {
+              "Value" : { "Ref" : "IamPolicy" }
+            }
+        }
+    }
