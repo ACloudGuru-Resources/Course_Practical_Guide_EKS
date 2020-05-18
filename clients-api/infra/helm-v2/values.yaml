@@ -7,7 +7,7 @@ replicaCount: 1
 image:
   repository: mariomerco/clients-api
   tag: latest
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 
 service:
   type: NodePort
