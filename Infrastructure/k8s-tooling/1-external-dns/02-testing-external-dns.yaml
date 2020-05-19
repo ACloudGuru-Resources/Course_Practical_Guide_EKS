@@ -4,9 +4,9 @@ metadata:
   name: nginx
   annotations:
     external-dns.alpha.kubernetes.io/hostname: app.yourdns.com
-    service.beta.kubernetes.io/aws-load-balancer-ssl-cert: arn:aws:acm:{region}:{account}:certificate/{id}
-    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http
-    service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "https"
+    # service.beta.kubernetes.io/aws-load-balancer-ssl-cert: arn:aws:acm:{region}:{account}:certificate/{id}
+    # service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http
+    # service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "https"
 spec:
   type: LoadBalancer
   ports:
