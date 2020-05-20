@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpService } from '../http.service';
 import { environment } from 'environments/environment';
+import { ConfigService } from '../shared/services/config.service';
 
 declare interface TableData {
     headerRow: string[];
@@ -17,7 +18,7 @@ export class TablesComponent implements OnInit {
     public inventoryList: any;
     public searchString: string;
 
-  constructor(public http: HttpService) { 
+  constructor(public http: HttpService, private config: ConfigService) { 
     this.tableData = {
         headerRow: [ 'ID', 'Name', 'Available Copies', 'Unavailable Copies', 'Total'],
         dataRows: [[]]
@@ -26,7 +27,7 @@ export class TablesComponent implements OnInit {
   }
 
   async getInventoryList() {
-    const request = await this.http.GET<any>(environment.inventoryApi + '/summary');
+    const request = await this.http.GET<any>(this.config.api.inventoryApi + '/summary');
     request.subscribe(
       (result) => {
           this.inventoryList = result;

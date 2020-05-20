@@ -5,6 +5,7 @@ import { FormGroup, FormControl} from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { DatepickerOptions } from 'ng2-datepicker';
 import * as moment from 'moment';
+import { ConfigService } from '../shared/services/config.service';
 
 
 declare interface TableData {
@@ -43,7 +44,7 @@ export class UserComponent implements OnInit {
     addStyle: {}, // Optional, value to pass to [ngStyle] on the input field
   };
 
-  constructor(public http: HttpService, private toastr: ToastrService) { 
+  constructor(public http: HttpService, private toastr: ToastrService, private config: ConfigService) { 
     this.tableData = {
       headerRow: [ 'ID', 'Name', 'E-mail'],
       dataRows: [[]]
@@ -56,10 +57,11 @@ export class UserComponent implements OnInit {
       ClientId: new FormControl(this._id),
       RegistrationDate: new FormControl(new Date(Date.now()))
     });
+    console.log(this.config.api);
   }
   
   async getclientsList() {
-    const request = await this.http.GET<any>(environment.clientApi + '/list');
+    const request = await this.http.GET<any>(this.config.api.clientApi + '/list');
     request.subscribe(
       (result) => {
           this.resourcesList = result;
@@ -74,7 +76,7 @@ export class UserComponent implements OnInit {
   }
 
   async getResourcesList() {
-    const request = await this.http.GET<any>(environment.resourceApi + '/list');
+    const request = await this.http.GET<any>(this.config.api.resourceApi + '/list');
     request.subscribe(
       (result) => {
           this.resourcesList_ = result.data.data;
@@ -88,7 +90,7 @@ export class UserComponent implements OnInit {
   }
 
   async getRentingList(id:any) {
-    const request = await this.http.GET<any>(environment.rentingApi + '/list/by-client-id/' + id);
+    const request = await this.http.GET<any>(this.config.api.rentingApi + '/list/by-client-id/' + id);
     request.subscribe(
       (result) => {
           this.rentingList = result.data.items;
@@ -203,7 +205,7 @@ export class UserComponent implements OnInit {
   }
 
   async saveClient(data:any) {
-    const request = await this.http.POST<any>(environment.clientApi + '/create', data);
+    const request = await this.http.POST<any>(this.config.api.clientApi + '/create', data);
     request.subscribe(
       (result) => {
           this.getclientsList();
@@ -217,7 +219,7 @@ export class UserComponent implements OnInit {
   }
 
   async saveRenting(data:any) {
-    const request = await this.http.POST<any>(environment.rentingApi + '/register', data);
+    const request = await this.http.POST<any>(this.config.api.rentingApi + '/register', data);
     request.subscribe(
       (result) => {
           if(result.data && result.data.message) {
@@ -237,7 +239,7 @@ export class UserComponent implements OnInit {
   }
 
   async updateClient(_id:any, data:any) {
-    const request = await this.http.PUT<any>(environment.clientApi + '/update/' + _id, data);
+    const request = await this.http.PUT<any>(this.config.api.clientApi + '/update/' + _id, data);
     request.subscribe(
       (result) => {
           this.getclientsList();
@@ -251,7 +253,7 @@ export class UserComponent implements OnInit {
   }
 
   async returnResource(_id:any, data:any) {
-    const request = await this.http.PUT<any>(environment.rentingApi + '/return/' + _id, data);
+    const request = await this.http.PUT<any>(this.config.api.rentingApi + '/return/' + _id, data);
     request.subscribe(
       (result) => {
           this.getclientsList();
@@ -272,7 +274,7 @@ export class UserComponent implements OnInit {
   }
 
   async deleteClient(_id:any) {
-    const request = await this.http.DELETE<any>(environment.clientApi + '/delete/' + _id);
+    const request = await this.http.DELETE<any>(this.config.api.clientApi + '/delete/' + _id);
     request.subscribe(
       (result) => {
           this.getclientsList();

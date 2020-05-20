@@ -3,6 +3,7 @@ import { HttpService } from '../http.service'
 import { environment } from 'environments/environment'
 import { FormGroup, FormControl} from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { ConfigService } from '../shared/services/config.service';
 
 declare interface TableData {
   headerRow: string[];
@@ -23,7 +24,7 @@ export class HomeComponent implements OnInit {
   public editMode: boolean;
   public _id: any;
 
-constructor(public http: HttpService, private toastr: ToastrService) { 
+constructor(public http: HttpService, private toastr: ToastrService, private config: ConfigService) { 
   this.tableData = {
     headerRow: [ 'ID', 'Name', 'Author', 'Type', 'Date of Publication'],
     dataRows: [[]]
@@ -33,7 +34,7 @@ constructor(public http: HttpService, private toastr: ToastrService) {
 }
 
 async getResourcesList() {
-  const request = await this.http.GET<any>(environment.resourceApi + '/list');
+  const request = await this.http.GET<any>(this.config.api.resourceApi + '/list');
   request.subscribe(
     (result) => {
         this.resourcesList = result.data;
@@ -116,7 +117,7 @@ delete_click(_id: any) {
 }
 
 async saveResource(data:any) {
-  const request = await this.http.POST<any>(environment.resourceApi + '/create', data);
+  const request = await this.http.POST<any>(this.config.api.resourceApi + '/create', data);
   request.subscribe(
     (result) => {
         this.getResourcesList();
@@ -130,7 +131,7 @@ async saveResource(data:any) {
 }
 
 async updateResource(_id:any, data:any) {
-  const request = await this.http.PUT<any>(environment.resourceApi + '/update/' + _id, data);
+  const request = await this.http.PUT<any>(this.config.api.resourceApi + '/update/' + _id, data);
   request.subscribe(
     (result) => {
         this.getResourcesList();
@@ -144,7 +145,7 @@ async updateResource(_id:any, data:any) {
 }
 
 async registerResource(data:any) {
-  const request = await this.http.POST<any>(environment.inventoryApi + '/register', data);
+  const request = await this.http.POST<any>(this.config.api.inventoryApi + '/register', data);
   request.subscribe(
     (result) => {
         this.getResourcesList();
