@@ -7,7 +7,7 @@ replicaCount: 1
 image:
   repository: mariomerco/front-end
   tag: dev
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 
 service:
   type: NodePort
@@ -27,3 +27,6 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+api:
+  url: https://api.dev2.mariomerco.com
