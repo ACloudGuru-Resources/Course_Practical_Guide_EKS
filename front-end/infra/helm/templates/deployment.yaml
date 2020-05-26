@@ -20,6 +20,10 @@ spec:
         app: {{ template "acg-front-end.name" . }}
         release: {{ .Release.Name }}
     spec:
+      volumes:
+        - name: {{ template "acg-front-end.fullname" . }}-config-file
+          secret:
+            secretName: {{ template "acg-front-end.fullname" . }}-config-file
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -28,6 +32,10 @@ spec:
             - name: http
               containerPort: {{ .Values.service.port }}
               protocol: TCP
+          volumeMounts:
+            - name: {{ template "acg-front-end.fullname" . }}-config-file
+              mountPath: /usr/share/nginx/html/assets/json/config.json
+              subPath: config.json
           resources:
 {{ toYaml .Values.resources | indent 12 }}
     {{- with .Values.nodeSelector }}

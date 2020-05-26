@@ -37,6 +37,8 @@ spec:
               value: http://clients-api-service
             - name: AWS_REGION
               value: {{ .Values.aws.region }}
+            - name: RESOURCES_API_ENDPOINT
+              value: http://resource-api-service
           resources:
 {{ toYaml .Values.resources | indent 12 }}
     {{- with .Values.nodeSelector }}
