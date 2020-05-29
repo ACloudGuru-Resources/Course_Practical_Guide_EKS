@@ -4,6 +4,7 @@ kind: ClusterConfig
 metadata:
   name: eks-acg
   region: us-east-2
+  version: "1.15"
 
 vpc:
   cidr: 10.0.0.0/16

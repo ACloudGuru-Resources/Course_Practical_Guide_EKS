@@ -9,8 +9,8 @@ metadata:
 vpc:
   cidr: 10.0.0.0/16
 
-nodeGroups:
-  - name: eks-node-group-v2
+managedNodeGroups:
+  - name: eks-node-group-managed-nodes
     instanceType: t2.medium
     desiredCapacity: 3
     privateNetworking: true
