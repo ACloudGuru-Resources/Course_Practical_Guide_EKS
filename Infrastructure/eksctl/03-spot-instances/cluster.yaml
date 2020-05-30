@@ -15,3 +15,4 @@ nodeGroups:
     instancesDistribution:
       instanceTypes: ["t3.medium", "t3.small"]
       onDemandPercentageAboveBaseCapacity: 0
+    labels: { lifecycle: Ec2Spot }
