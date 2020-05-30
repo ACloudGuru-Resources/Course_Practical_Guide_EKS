@@ -29,4 +29,4 @@ tolerations: []
 affinity: {}
 
 api:
-  url: https://api.2dev.mariomerco.com
+  url: https://api.dev.mariomerco.com
