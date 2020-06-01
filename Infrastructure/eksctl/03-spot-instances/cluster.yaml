@@ -12,7 +12,8 @@ vpc:
 nodeGroups:
   - name: eks-node-group-spot-instances
     desiredCapacity: 3
+    privateNetworking: true
     instancesDistribution:
-      instanceTypes: ["t3.medium", "t3.small"]
+      instanceTypes: ["t3.medium", "t3a.medium"]
       onDemandPercentageAboveBaseCapacity: 0
     labels: { lifecycle: Ec2Spot }
