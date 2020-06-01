@@ -13,3 +13,5 @@ fargateProfiles:
   - name: acg-fargate
     selectors:
       - namespace: development
+      - namespace: kube-system
+      - namespace: default
