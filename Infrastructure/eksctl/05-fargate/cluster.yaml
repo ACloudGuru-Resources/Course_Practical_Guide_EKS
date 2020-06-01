@@ -10,8 +10,6 @@ vpc:
   cidr: 10.0.0.0/16
 
 fargateProfiles:
-  - name: acg-fargate
+  - name: acg-fargate-development
     selectors:
       - namespace: development
-      - namespace: kube-system
-      - namespace: default
