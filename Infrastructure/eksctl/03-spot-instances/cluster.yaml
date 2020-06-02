@@ -4,6 +4,7 @@ kind: ClusterConfig
 metadata:
   name: eks-acg
   region: us-east-2
+  version: "1.15"
 
 vpc:
   cidr: 10.0.0.0/16
@@ -11,6 +12,8 @@ vpc:
 nodeGroups:
   - name: eks-node-group-spot-instances
     desiredCapacity: 3
+    privateNetworking: true
     instancesDistribution:
-      instanceTypes: ["t3.medium", "t3.small"]
+      instanceTypes: ["t3.medium", "t3a.medium"]
       onDemandPercentageAboveBaseCapacity: 0
+    labels: { lifecycle: Ec2Spot }
