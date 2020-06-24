@@ -1,16 +1,22 @@
 version: 0.2
 
+env:
+  variables:
+    APP: resources-api
+    ECR_URL: 750796802028.dkr.ecr.us-east-2.amazonaws.com
+    ECR_REPO_NAME: bookstore.resources-api
+
 phases:
-  install:
-    runtime-versions:
-      docker: 18
   pre_build:
     commands:
-      - TAG=${ECR_URI}:${MAJOR}.${MINOR}.${CODEBUILD_BUILD_NUMBER}
-      - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
-  build:
+      - TAG=develop.${CODEBUILD_BUILD_NUMBER}
+      - aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin ${ECR_URL}
+  build:  
     commands:
-      - docker build -t ${TAG} '--network=host' -f src/Dockerfile src
+      - docker build -t ${APP}:${TAG} -f src/Dockerfile src
+      - docker tag ${APP}:${TAG} ${ECR_URL}/${ECR_REPO_NAME}:${TAG}
   post_build:
     commands:
-      - docker push ${TAG}
+      - docker push ${ECR_URL}/${ECR_REPO_NAME}:${TAG}  
+
+      
