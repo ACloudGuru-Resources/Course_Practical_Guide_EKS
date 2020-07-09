@@ -2,13 +2,14 @@ version: 0.2
 
 env:
   variables:
-    K8S_DEPLOYMENT_NAME: resource-api-development-acg-resource-api
+    # K8S_DEPLOYMENT_NAME: resource-api-development-acg-resource-api
+    # K8S_CONTAINER_NAME: acg-resource-api
+    HELM_RELEASE_NAME: resource-api-development
     NAMESPACE: development
     ECR_REPO: 750796802028.dkr.ecr.us-east-2.amazonaws.com/bookstore.resources-api
-    IMAGE_TAG: deveop.28
 
 phases:
-  install: # Install AWS cli, kubectl (needed for Helm) and Helm
+  install: 
     commands:
       - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
       - unzip awscliv2.zip
@@ -19,12 +20,18 @@ phases:
       - curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 > get_helm.sh
       - chmod 700 get_helm.sh
       - ./get_helm.sh
-  pre_build: # Add kubeconfig to access to EKS cluster
+  pre_build: 
     commands:
-      - aws eks update-kubeconfig --name eks-acg
-  build: # Build Docker image and tag it with the commit sha
+      - source `pwd`/version
+      - COMMIT_ID_SHORT=`echo "${CODEBUILD_RESOLVED_SOURCE_VERSION}" | cut -c1-8`
+      - TAG=`echo "${MAJOR}.${MINOR}.${COMMIT_ID_SHORT}"`
+      - echo ${TAG}
+      # - aws eks --region ${AWS_DEFAULT_REGION} update-kubeconfig --name eks-acg
+      # - kubectl get nodes
+  build: 
     commands:
-      - kubectl set image ${K8S_DEPLOYMENT_NAME} --namespace ${NAMESPACE} ${ECR_REPO}:${IMAGE_TAG}
-  post_build: # Push the Docker image to the ECR
+      # - helm upgrade --install --namespace ${NAMESPACE} resource-api-development --set image.repository=${ECR_REPO} --set image.tag=${TAG} infra/helm-v2
+      - ls 
+  post_build: 
     commands:
-      - kubectl get deployments -n ${NAMESPACE}
+      - echo Done
