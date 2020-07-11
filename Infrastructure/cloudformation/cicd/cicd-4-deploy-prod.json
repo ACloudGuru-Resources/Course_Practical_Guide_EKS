@@ -11,6 +11,16 @@
             "Type": "String",
             "Default": "infra/codebuild/buildspec.yml"
         },
+        "DevelopDeploySpecLocation": {
+            "Description": "The location of the buildspec used to deploy to development file inside the repository",
+            "Type": "String",
+            "Default": "infra/codebuild/deployment/development/buildspec.yml"
+        },
+        "ProdDeploySpecLocation": {
+            "Description": "The location of the buildspec used to deploy to production file inside the repository",
+            "Type": "String",
+            "Default": "infra/codebuild/deployment/prod/buildspec.yml"
+        },
         "CICDBranch": {
             "Description": "The branch that will be used for the CICD process",
             "Type": "String",
@@ -56,9 +66,22 @@
                     "Statement": [
                         {
                             "Effect": "Allow",
+                            "Action": [
+                                "eks:DescribeNodegroup",
+                                "eks:DescribeUpdate",
+                                "eks:DescribeCluster"
+                            ],
+                            "Resource": "*"
+                        },
+                        {
+                            "Effect": "Allow",
                             "Resource": [
                                 { "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/bookstore-${AppName}"},
-                                { "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/bookstore-${AppName}:*"}
+                                { "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/bookstore-${AppName}:*"},
+                                { "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/development-deploy-bookstore-${AppName}"},
+                                { "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/development-deploy-bookstore-${AppName}:*"},
+                                { "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/prod-deploy-bookstore-${AppName}"},
+                                { "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/prod-deploy-bookstore-${AppName}:*"}
                             ],
                             "Action": [
                                 "logs:CreateLogGroup",
@@ -149,6 +172,62 @@
                     "BuildSpec": { "Ref": "BuildSpecLocation" }
                 },
                 "SourceVersion" : { "Fn::Sub": "refs/heads/${CICDBranch}" },
+                "TimeoutInMinutes" : 60
+            }
+        },
+        "DevelopDeploymentCodeBuildProject": {
+            "Type" : "AWS::CodeBuild::Project",
+            "Properties" : {
+                "Artifacts" : {
+                    "Type": "NO_ARTIFACTS"
+                },
+                "BadgeEnabled" : false,
+                "Description" : { "Fn::Sub": "CodeBuild project to deploy the App ${AppName} into the 'development' environment" },
+                "Environment" : {
+                    "Type": "LINUX_CONTAINER",
+                    "Image": "aws/codebuild/amazonlinux2-x86_64-standard:3.0",
+                    "ComputeType": "BUILD_GENERAL1_SMALL",
+                    "EnvironmentVariables": [],
+                    "PrivilegedMode": true,
+                    "ImagePullCredentialsType": "CODEBUILD"
+                },
+                "Name" : { "Fn::Sub" : "development-deploy-bookstore-${AppName}" },
+                "QueuedTimeoutInMinutes" : 480,
+                "ServiceRole" : { "Ref": "IamServiceRole" },
+                "Source" : {
+                    "Type": "CODECOMMIT",
+                    "Location": { "Fn::GetAtt" : [ "CodeCommitRepository", "CloneUrlHttp"]},
+                    "BuildSpec": { "Ref": "DevelopDeploySpecLocation" }
+                },
+                "SourceVersion" : { "Fn::Sub": "refs/heads/${CICDBranch}" },
+                "TimeoutInMinutes" : 60
+            }
+        },
+        "ProductionDeploymentCodeBuildProject": {
+            "Type" : "AWS::CodeBuild::Project",
+            "Properties" : {
+                "Artifacts" : {
+                    "Type": "NO_ARTIFACTS"
+                },
+                "BadgeEnabled" : false,
+                "Description" : { "Fn::Sub": "CodeBuild project to deploy the App ${AppName} into the 'production' environment" },
+                "Environment" : {
+                    "Type": "LINUX_CONTAINER",
+                    "Image": "aws/codebuild/amazonlinux2-x86_64-standard:3.0",
+                    "ComputeType": "BUILD_GENERAL1_SMALL",
+                    "EnvironmentVariables": [],
+                    "PrivilegedMode": true,
+                    "ImagePullCredentialsType": "CODEBUILD"
+                },
+                "Name" : { "Fn::Sub" : "prod-deploy-bookstore-${AppName}" },
+                "QueuedTimeoutInMinutes" : 480,
+                "ServiceRole" : { "Ref": "IamServiceRole" },
+                "Source" : {
+                    "Type": "CODECOMMIT",
+                    "Location": { "Fn::GetAtt" : [ "CodeCommitRepository", "CloneUrlHttp"]},
+                    "BuildSpec": { "Ref": "ProdDeploySpecLocation" }
+                },
+                "SourceVersion" : "refs/heads/master",
                 "TimeoutInMinutes" : 60
             }
         },
@@ -552,6 +631,76 @@
                                 ],
                                 "Region": { "Ref": "AWS::Region" },
                                 "Namespace": "BuildVariables"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "DeployDevelopment",
+                        "Actions": [
+                            {
+                                "Name": "DeployDevelopment",
+                                "ActionTypeId": {
+                                    "Category": "Build",
+                                    "Owner": "AWS",
+                                    "Provider": "CodeBuild",
+                                    "Version": "1"
+                                },
+                                "RunOrder": 1,
+                                "Configuration": {
+                                    "ProjectName": { "Ref": "DevelopDeploymentCodeBuildProject" }
+                                },
+                                "OutputArtifacts": [
+                                    {
+                                        "Name": "DeployArtifact"
+                                    }
+                                ],
+                                "InputArtifacts": [
+                                    {
+                                        "Name": "SourceArtifact"
+                                    }
+                                ],
+                                "Region": { "Ref": "AWS::Region" },
+                                "Namespace": "DeployVariables"
+                            }
+                        ]
+                    },
+                    {
+                        "Name": "DeployProd",
+                        "Actions": [
+                            {
+                                "Name": "Approve",
+                                "ActionTypeId": {
+                                    "Category": "Approval",
+                                    "Owner": "AWS",
+                                    "Provider": "Manual",
+                                    "Version": "1"
+                                },
+                                "RunOrder": 1
+                            },
+                            {
+                                "Name": "DeployProd",
+                                "ActionTypeId": {
+                                    "Category": "Build",
+                                    "Owner": "AWS",
+                                    "Provider": "CodeBuild",
+                                    "Version": "1"
+                                },
+                                "RunOrder": 2,
+                                "Configuration": {
+                                    "ProjectName": { "Ref": "ProductionDeploymentCodeBuildProject" }
+                                },
+                                "OutputArtifacts": [
+                                    {
+                                        "Name": "DeployProductionArtifact"
+                                    }
+                                ],
+                                "InputArtifacts": [
+                                    {
+                                        "Name": "SourceArtifact"
+                                    }
+                                ],
+                                "Region": { "Ref": "AWS::Region" },
+                                "Namespace": "DeployProductionVariables"
                             }
                         ]
                     }

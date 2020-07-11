@@ -10,6 +10,11 @@
             "Description": "The location of the buildspec file inside the repository",
             "Type": "String",
             "Default": "infra/codebuild/buildspec.yml"
+        },
+        "CICDBranch": {
+            "Description": "The branch that will be used for the CICD process",
+            "Type": "String",
+            "Default": "master"
         }
     },
     "Resources": {
@@ -119,7 +124,7 @@
                     "Location": { "Fn::GetAtt" : [ "CodeCommitRepository", "CloneUrlHttp"]},
                     "BuildSpec": { "Ref": "BuildSpecLocation" }
                 },
-                "SourceVersion" : "refs/heads/develop",
+                "SourceVersion" : { "Fn::Sub": "refs/heads/${CICDBranch}" },
                 "TimeoutInMinutes" : 60
             }
         }

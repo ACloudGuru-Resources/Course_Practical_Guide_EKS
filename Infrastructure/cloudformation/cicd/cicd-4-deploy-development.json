@@ -19,7 +19,7 @@
         "CICDBranch": {
             "Description": "The branch that will be used for the CICD process",
             "Type": "String",
-            "Default": "develop"
+            "Default": "master"
         }
     },
     "Resources": {
@@ -164,7 +164,7 @@
                     "Location": { "Fn::GetAtt" : [ "CodeCommitRepository", "CloneUrlHttp"]},
                     "BuildSpec": { "Ref": "BuildSpecLocation" }
                 },
-                "SourceVersion" : "refs/heads/develop",
+                "SourceVersion" : { "Fn::Sub": "refs/heads/${CICDBranch}" },
                 "TimeoutInMinutes" : 60
             }
         },
@@ -192,7 +192,7 @@
                     "Location": { "Fn::GetAtt" : [ "CodeCommitRepository", "CloneUrlHttp"]},
                     "BuildSpec": { "Ref": "DevelopDeploySpecLocation" }
                 },
-                "SourceVersion" : "refs/heads/develop",
+                "SourceVersion" : { "Fn::Sub": "refs/heads/${CICDBranch}" },
                 "TimeoutInMinutes" : 60
             }
         },
@@ -360,6 +360,23 @@
                                 "ecr:DescribeImages"
                             ],
                             "Resource": "*"
+                        },
+                        {
+                            "Effect": "Allow",
+                            "Action": "s3:*",
+                            "Resource": [
+                                {
+                                    "Fn::GetAtt":[ "CodePipelineS3BucketArtifacts", "Arn" ]
+                                },
+                                {
+                                    "Fn::Sub": [
+                                        "${BucketArn}/*",
+                                        {
+                                            "BucketArn": {"Fn::GetAtt":["CodePipelineS3BucketArtifacts", "Arn" ]}
+                                        }
+                                    ]
+                                }
+                            ]
                         }
                     ]
                 },
@@ -424,7 +441,96 @@
                 }
             }
         },
+        "CloudWatchEventRule": {
+            "Type" : "AWS::Events::Rule",
+            "Properties" : {
+                "EventPattern" : {
+                    "source": [
+                        "aws.codecommit"
+                    ],
+                    "detail-type": [
+                        "CodeCommit Repository State Change"
+                    ],
+                    "resources": [
+                        "arn:aws:codecommit:us-east-2:750796802028:bookstore.resources-api"
+                    ],
+                    "detail": {
+                        "event": [
+                            "referenceCreated",
+                            "referenceUpdated"
+                        ],
+                        "referenceType": [
+                            "branch"
+                        ],
+                        "referenceName": [
+                                "master"
+                        ]
+                    }
+                },
+                "State" : "ENABLED",
+                "Targets" : [
+                    {
+                        "Arn": { 
+                            "Fn::Sub": [
+                                "arn:aws:codepipeline:${AWS::Region}:${AWS::AccountId}:${CodePipelineBuildName}",
+                                {
+                                    "CodePipelineBuildName": { "Ref": "CodePipelineBuild" }
+                                }
+                            ]
+                        },
+                        "Id": "CodePipeline", 
+                        "RoleArn": { "Fn::GetAtt": ["CloudWatchTargetRole", "Arn"] }
+                    }
+                ]
+              }
+        },
         
+        "CloudWatchTargetRole": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Service": "events.amazonaws.com"
+                            },
+                            "Action": "sts:AssumeRole"
+                        }
+                    ]
+                }
+            }
+        },
+        
+        "CloudWatchTargetPolicy": {
+            "Type": "AWS::IAM::Policy",
+            "Properties": {
+                "PolicyDocument" : {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Action": [
+                                "codepipeline:StartPipelineExecution"
+                            ],
+                            "Resource": [
+                                { 
+                                    "Fn::Sub": [
+                                        "arn:aws:codepipeline:${AWS::Region}:${AWS::AccountId}:${CodePipelineBuildName}",
+                                        {
+                                            "CodePipelineBuildName": { "Ref": "CodePipelineBuild" }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "PolicyName" : { "Fn::Sub": "cloud-watch-rule-code-pipeline-policy-${AppName}" },
+                "Roles" : [ { "Ref": "CloudWatchTargetRole" } ]
+            }
+        },
         "CodePipelineBuild": {
             "Type" : "AWS::CodePipeline::Pipeline",
             "Properties" : {
@@ -494,10 +600,10 @@
                         ]
                     },
                     {
-                        "Name": "Deploy",
+                        "Name": "DeployDevelopment",
                         "Actions": [
                             {
-                                "Name": "Deploy",
+                                "Name": "DeployDevelopment",
                                 "ActionTypeId": {
                                     "Category": "Build",
                                     "Owner": "AWS",
