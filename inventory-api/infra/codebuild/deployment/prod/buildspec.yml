@@ -1,0 +1,35 @@
+version: 0.2
+
+env:
+  variables:
+    HELM_RELEASE_NAME: inventory-api-prod
+    NAMESPACE: prod
+    EKS_CLUSTER_NAME: eks-acg
+
+phases:
+  install: 
+    commands:
+      - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+      - unzip awscliv2.zip
+      - ./aws/install
+      - curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.16.8/2020-04-16/bin/linux/amd64/kubectl
+      - chmod +x kubectl
+      - mv ./kubectl /usr/local/bin/kubectl
+      - curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 > get_helm.sh
+      - chmod 700 get_helm.sh
+      - ./get_helm.sh
+  pre_build:  
+    commands:
+      - source `pwd`/version
+      - COMMIT_ID_SHORT=`echo "${CODEBUILD_RESOLVED_SOURCE_VERSION}" | cut -c1-8`
+      - TAG=`echo "${MAJOR}.${MINOR}.${COMMIT_ID_SHORT}"`
+      - echo ${TAG}
+      - aws eks --region ${AWS_DEFAULT_REGION} update-kubeconfig --name ${EKS_CLUSTER_NAME}
+      - kubectl get nodes
+  build: 
+    commands:
+      - cd infra/helm-v2
+      - helm upgrade --install --namespace ${NAMESPACE} ${HELM_RELEASE_NAME} -f values.yaml -f values.${NAMESPACE}.yaml --set image.tag=${TAG} .
+  post_build: 
+    commands:
+      - echo Done

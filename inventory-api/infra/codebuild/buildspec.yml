@@ -1,0 +1,24 @@
+version: 0.2
+
+env:
+  variables:
+    APP: inventory-api
+    ECR_URL: 750796802028.dkr.ecr.us-east-2.amazonaws.com
+    ECR_REPO_NAME: bookstore.inventory-api
+
+phases:
+  pre_build:
+    commands:
+      - source `pwd`/version
+      - COMMIT_ID_SHORT=`echo "${CODEBUILD_RESOLVED_SOURCE_VERSION}" | cut -c1-8`
+      - TAG=`echo "${MAJOR}.${MINOR}.${COMMIT_ID_SHORT}"`
+      - aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin ${ECR_URL}
+  build:  
+    commands:
+      - docker build -t ${APP}:${TAG} -f src/Dockerfile src
+      - docker tag ${APP}:${TAG} ${ECR_URL}/${ECR_REPO_NAME}:${TAG}
+  post_build:
+    commands:
+      - docker push ${ECR_URL}/${ECR_REPO_NAME}:${TAG}
+
+      
