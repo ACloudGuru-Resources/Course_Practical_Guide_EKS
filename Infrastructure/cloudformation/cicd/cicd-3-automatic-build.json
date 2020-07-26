@@ -202,7 +202,7 @@
                                 "codecommit:GetUploadArchiveStatus",
                                 "codecommit:UploadArchive"
                             ],
-                            "Resource": "*",
+                            "Resource": {"Fn::GetAtt": ["CodeCommitRepository","Arn"]},
                             "Effect": "Allow"
                         },
                         {
@@ -408,7 +408,7 @@
                         "CodeCommit Repository State Change"
                     ],
                     "resources": [
-                        { "Fn::GetAtt": ["CodeCommitRepository", "Arn"]}
+                        {"Fn::GetAtt": ["CodeCommitRepository", "Arn"]}
                     ],
                     "detail": {
                         "event": [
