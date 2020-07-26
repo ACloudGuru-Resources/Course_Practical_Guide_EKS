@@ -408,7 +408,7 @@
                         "CodeCommit Repository State Change"
                     ],
                     "resources": [
-                        "arn:aws:codecommit:us-east-2:750796802028:bookstore.resources-api"
+                        { "Fn::GetAtt": ["CodeCommitRepository", "Arn"]}
                     ],
                     "detail": {
                         "event": [
