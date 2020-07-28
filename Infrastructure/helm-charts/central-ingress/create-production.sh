@@ -1,0 +1,1 @@
+helm upgrade --install --namespace production -f values.production.yaml central-ingress-production .
