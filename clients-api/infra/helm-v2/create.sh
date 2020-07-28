@@ -6,4 +6,11 @@ then
     namespace="development"
 fi
 
-helm upgrade --install --namespace ${namespace} clients-api-${namespace} .
+if [ "${namespace}" == "prod" ]
+then
+    ASPNETCORE_ENVIRONMENT=Production
+else 
+    ASPNETCORE_ENVIRONMENT=Development
+fi
+
+helm upgrade --install --namespace ${namespace} clients-api-${namespace} --set aspnet.environment=${ASPNETCORE_ENVIRONMENT} .
