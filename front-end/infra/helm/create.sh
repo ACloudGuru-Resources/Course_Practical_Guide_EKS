@@ -6,4 +6,4 @@ then
     namespace="development"
 fi
 
-helm upgrade --install --namespace ${namespace} -f values.yaml -f values.${namespace}.yaml front-end-${namespace} .
+helm upgrade --install --namespace ${namespace} -f values.yaml -f values.${namespace}.yaml front-end-${namespace} --set image.repository=mariomerco/front-end .
