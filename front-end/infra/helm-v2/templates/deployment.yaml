@@ -1,0 +1,52 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ template "acg-front-end.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ template "acg-front-end.name" . }}
+    chart: {{ template "acg-front-end.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "acg-front-end.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "acg-front-end.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      volumes:
+        - name: {{ template "acg-front-end.fullname" . }}-config-file
+          secret:
+            secretName: {{ template "acg-front-end.fullname" . }}-config-file
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          volumeMounts:
+            - name: {{ template "acg-front-end.fullname" . }}-config-file
+              mountPath: /usr/share/nginx/html/assets/json/config.json
+              subPath: config.json
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
