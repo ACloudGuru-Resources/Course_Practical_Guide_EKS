@@ -5,10 +5,10 @@
         "Environment": {
             "Description": "The environment this hosted zone belongs to",
             "Type": "String",
-            "Default": "production",
+            "Default": "prod",
             "AllowedValues": [
                 "development",
-                "production"
+                "prod"
             ]
         },
         "DomainName": {

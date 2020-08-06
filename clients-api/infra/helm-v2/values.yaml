@@ -27,3 +27,6 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+aspnet:
+  environment: Development
