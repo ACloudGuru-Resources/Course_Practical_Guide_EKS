@@ -202,7 +202,7 @@
                                 "codecommit:GetUploadArchiveStatus",
                                 "codecommit:UploadArchive"
                             ],
-                            "Resource": "*",
+                            "Resource": {"Fn::GetAtt": ["CodeCommitRepository","Arn"]},
                             "Effect": "Allow"
                         },
                         {
@@ -408,7 +408,7 @@
                         "CodeCommit Repository State Change"
                     ],
                     "resources": [
-                        "arn:aws:codecommit:us-east-2:750796802028:bookstore.resources-api"
+                        {"Fn::GetAtt": ["CodeCommitRepository", "Arn"]}
                     ],
                     "detail": {
                         "event": [
@@ -419,7 +419,7 @@
                             "branch"
                         ],
                         "referenceName": [
-                                "master"
+                            { "Ref": "CICDBranch" }
                         ]
                     }
                 },

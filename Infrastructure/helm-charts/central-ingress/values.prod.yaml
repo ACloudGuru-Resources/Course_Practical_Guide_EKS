@@ -38,6 +38,6 @@ ingress:
         serviceName: front-end-service
         port: 80
 
-      - hostname: api.mariomerco.com.
+      - hostname: api.mariomerco.com
         serviceName: front-end-service-proxy
         port: 80

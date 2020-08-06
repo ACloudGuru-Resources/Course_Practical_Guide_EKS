@@ -6,8 +6,8 @@ then
     namespace="development"
 fi
 
-aws cloudformation create-stack \
+aws cloudformation deploy \
     --stack-name ${namespace}-renting-api-dynamodb-table \
-    --template-body file://./dynamodb-table.json \
-    --parameters \
-        ParameterKey=Namespace,ParameterValue=${namespace}
+    --template-file dynamodb-table.json \
+    --parameter-overrides \
+        Namespace=${namespace}
