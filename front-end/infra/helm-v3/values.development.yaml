@@ -1,0 +1,5 @@
+image:
+  repository: 750796802028.dkr.ecr.us-east-2.amazonaws.com/bookstore.front-end
+
+api:
+  url: https://api.dev.mariomerco.com
