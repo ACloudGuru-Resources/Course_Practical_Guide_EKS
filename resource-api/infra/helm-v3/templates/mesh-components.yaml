@@ -2,13 +2,13 @@
 apiVersion: appmesh.k8s.aws/v1beta2
 kind: VirtualNode
 metadata:
-  name: {{ template "acg-resource-api.fullname" . }}
-  namespace: {{ .Release.Name }}
+  name: {{ template "acg-resource-api.name" . }}
+  namespace: {{ .Release.Namespace }}
 spec:
   podSelector:
     matchLabels:
-      app: {{ template "acg-resource-api.fullname" . }}
-      release: {{ template "acg-resource-api.fullname" . }}-{{ .Release.Name }}
+      app: {{ template "acg-resource-api.name" . }}
+      release: {{ .Release.Name }}
   listeners:
     - portMapping:
         port: {{ .Values.service.port }}
@@ -28,13 +28,13 @@ spec:
   provider:
     virtualRouter:
       virtualRouterRef:
-        name: {{ template "acg-resource-api.fullname" . }}-virtual-router
+        name: {{ template "acg-resource-api.name" . }}-virtual-router
 
 --- 
 apiVersion: appmesh.k8s.aws/v1beta2
 kind: VirtualRouter
 metadata:
-  name: {{ template "acg-resource-api.fullname" . }}-virtual-router
+  name: {{ template "acg-resource-api.name" . }}-virtual-router
   namespace: {{ .Release.Namespace }}
 spec:
   listeners:
@@ -42,12 +42,12 @@ spec:
         port: {{ .Values.service.port }}
         protocol: http
   routes:
-    - name: {{ template "acg-resource-api.fullname" . }}-route
+    - name: {{ template "acg-resource-api.name" . }}-route
       httpRoute:
         match:
           prefix: /
         action:
           weightedTargets:
             - virtualNodeRef:
-                name: {{ template "acg-resource-api.fullname" . }}
+                name: {{ template "acg-resource-api.name" . }}
               weight: 1
