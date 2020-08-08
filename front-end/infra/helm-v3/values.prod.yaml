@@ -1,5 +1,10 @@
 image:
   repository: 750796802028.dkr.ecr.us-east-2.amazonaws.com/bookstore.front-end
 
+# REMEMBER TO TEST WHETHER THIS IS REALLY REQUIRED
 api:
   url: https://api.mariomerco.com
+  resource_api: https://resource-api.mariomerco.com/
+  inventory_api: https://inventory-api.mariomerco.com/
+  renting_api: https://renting-api.mariomerco.com/
+  clients_api: https://clients-api.mariomerco.com/
