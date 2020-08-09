@@ -59,3 +59,5 @@ services:
     build: ./front-end
     ports:
       - "5002:80"
+    volumes:
+      - ./front-end-config.json:/usr/share/nginx/html/assets/json/config.json

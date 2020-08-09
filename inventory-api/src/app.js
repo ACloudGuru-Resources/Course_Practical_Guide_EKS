@@ -1,6 +1,6 @@
 const express = require('express');
 const morgan = require('morgan');
-const http_client = require('request');
+const http_client = require('http');
 const app = express();
 const AWS = require('aws-sdk');
 const uuidv1 = require('uuid/v1');
