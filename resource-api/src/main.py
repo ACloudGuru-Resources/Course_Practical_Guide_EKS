@@ -5,13 +5,18 @@ import os
 import json
 import uuid
 import boto3
-
+from aws_xray_sdk.core import xray_recorder
+from aws_xray_sdk.core import patch_all
 
 app = Flask(__name__)
 resource_collection_name = 'Resources'
 dynamodb_table = os.environ['DYNAMODB_TABLE']
 dynamodb = boto3.resource('dynamodb')
 
+xray_recorder.configure(service='Resource API')
+plugins = ('ECSPlugin')
+xray_recorder.configure(plugins=plugins)
+patch_all()
 
 # DynamoDB: 
 @app.route("/create", methods=['POST'])
