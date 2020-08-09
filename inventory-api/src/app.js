@@ -9,6 +9,10 @@ const async = require('async');
 app.use(morgan('short'));
 app.use(express.json());
 
+var AWSXRay = require('aws-xray-sdk');
+AWSXRay.config([AWSXRay.plugins.ECSPlugin]);
+app.use(AWSXRay.express.openSegment('Inventory API'));
+
 const port = 5001;
 const resourceApiEndpont = process.env.RESOURCE_API_ENDPOINT || 'http://localhost:5000';
 const dynamodbTable = process.env.DYNAMODB_TABLE || 'development-inventory' ;
