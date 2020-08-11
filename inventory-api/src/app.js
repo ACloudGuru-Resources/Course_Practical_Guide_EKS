@@ -1,10 +1,12 @@
 const express = require('express');
 const morgan = require('morgan');
 const http_client = require('http');
+const https_client = require('https');
 const app = express();
 const AWS = require('aws-sdk');
 const uuidv1 = require('uuid/v1');
 const async = require('async');
+const { url } = require('inspector');
 
 app.use(morgan('short'));
 app.use(express.json());
@@ -19,15 +21,17 @@ app.post('/register', (request, response) => {
     inventoryRegistryJson = request.body;
     // TODO: Validate
     
-    url = resourceApiEndpont + '/get/' + inventoryRegistryJson.ResourceId
+    resourceApiUrl = resourceApiEndpont + '/get/' + inventoryRegistryJson.ResourceId;
     
-    resourceApiResponse = http_client.get(url, (error, res, body) => {
-        let json = JSON.parse(body)
+    client = resourceApiUrl.startsWith("http://") ? http_client : https_client;
 
-        if(res.statusCode == 404) {
-            response.status(404)
-                .json({'message': "The resource wasn't found."})
-        } else {
+    resourceApiResponse = client.get(resourceApiUrl, (resp) => {
+        let data = '';
+
+        resp.on('data', (chunk) => {
+            data += chunk;
+        });
+        resp.on('end', () => {
             if(inventoryRegistryJson.Available == undefined) {
                 inventoryRegistryJson.Available = true
             }
@@ -49,8 +53,16 @@ app.post('/register', (request, response) => {
                     response.status(201)
                         .json({ 'insertedId': inventoryRegistryJson._id })
                 }
-            })
-        }
+            })    
+        });
+        resp.on('error', (err) => {
+            if(resp.statusCode == 404) {
+                response.status(404)
+                .json({'message': "The resource wasn't found."})
+            } else {
+                console.log(err)
+            }
+        });
     })
 })
 
@@ -100,10 +112,24 @@ app.put('/setAvailability/:id', async (request, response) => {
 
 app.get('/summary', function(request, response) {
     resourceApiListUrl = resourceApiEndpont + "/list"
+    console.log(resourceApiListUrl)
 
-    resourceApiResponse = http_client.get(resourceApiListUrl, (error, res, body) => {
-        let listOfResources = JSON.parse(body)        
-        const r = iterateResponsePromise(listOfResources, response)      
+    client = resourceApiListUrl.startsWith("http://") ? http_client : https_client;
+    resourceApiResponse = client.get(resourceApiListUrl, (resp) => {
+        let data = '';
+
+        resp.on('data', (chunk) => {
+            data += chunk;
+        });
+        resp.on('end', () => {
+            console.log(data)
+            let listOfResources = JSON.parse(data)
+            const r = iterateResponsePromise(listOfResources, response)      
+        });
+        resp.on('error', (err) => {
+            console.log(err)
+        });
+        
     })
 })
 
