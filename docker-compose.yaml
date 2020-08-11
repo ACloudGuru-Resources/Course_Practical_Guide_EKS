@@ -51,7 +51,7 @@ services:
       - 80:80
     depends_on:
       - resources-api
-      # - inventory-api
+      - inventory-api
       - front-end
     volumes:
       - ./default.conf:/etc/nginx/conf.d/default.conf
