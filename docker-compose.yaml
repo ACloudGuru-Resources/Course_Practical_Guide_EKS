@@ -43,6 +43,7 @@ services:
       DYNAMODB_TABLE: development-renting
       INVENTORY_API_ENDPOINT: http://inventory-api:5001
       CLIENTS_API_ENDPOINT: http://clients-api:5003
+      RESOURCES_API_ENDPOINT: http://resources-api:5000
 
   proxy:
     image: nginx:stable-alpine
@@ -50,7 +51,7 @@ services:
       - 80:80
     depends_on:
       - resources-api
-      - inventory-api
+      # - inventory-api
       - front-end
     volumes:
       - ./default.conf:/etc/nginx/conf.d/default.conf
