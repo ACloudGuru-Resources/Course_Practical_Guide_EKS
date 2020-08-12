@@ -1,9 +1,15 @@
+var AWSXRay = require('aws-xray-sdk');
 const express = require('express');
 const morgan = require('morgan');
+
+AWSXRay.captureHTTPsGlobal(require('http'));
+AWSXRay.captureHTTPsGlobal(require('https'));
+
 const http_client = require('http');
 const https_client = require('https');
+
 const app = express();
-const AWS = require('aws-sdk');
+const AWS = AWSXRay.captureAWS(require('aws-sdk'));
 const uuidv1 = require('uuid/v1');
 const async = require('async');
 const { url } = require('inspector');
@@ -16,6 +22,8 @@ const resourceApiEndpont = process.env.RESOURCE_API_ENDPOINT || 'http://localhos
 const dynamodbTable = process.env.DYNAMODB_TABLE || 'development-inventory' ;
 const awsDefaultRegion = process.env.AWS_DEFAULT_REGION || 'us-east-2'
 const dynamoDb = new AWS.DynamoDB.DocumentClient({region: awsDefaultRegion});
+
+app.use(AWSXRay.express.openSegment('Inventory API'));
 
 app.post('/register', (request, response) => {
     inventoryRegistryJson = request.body;
@@ -132,6 +140,8 @@ app.get('/summary', function(request, response) {
         
     })
 })
+
+app.use(AWSXRay.express.closeSegment());
 
 async function iterateResponsePromise(listOfResources, response) {
     async.map(listOfResources.data.data, function(item, callback) {
