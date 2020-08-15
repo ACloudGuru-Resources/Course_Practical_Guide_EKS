@@ -1,0 +1,10 @@
+apiVersion: appmesh.k8s.aws/v1beta2
+kind: Mesh
+metadata:
+  name: prod-mesh
+spec:
+  egressFilter:
+    type: ALLOW_ALL
+  namespaceSelector:
+    matchLabels:
+      mesh: prod-mesh
