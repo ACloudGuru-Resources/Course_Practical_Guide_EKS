@@ -1,4 +1,4 @@
 Rails.application.config.xray = {
-  name: 'my app',
+  name: 'Renting API',
   patch: %I[net_http aws_sdk]
 }

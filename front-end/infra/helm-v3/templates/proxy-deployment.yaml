@@ -24,6 +24,7 @@ spec:
       - name: {{ template "acg-front-end.fullname" . }}-proxy-config
         configMap:
           name: {{ template "acg-front-end.fullname" . }}-proxy-config
+      serviceAccountName: front-end-iam-service-account
       containers:
         - name: {{ .Chart.Name }}-proxy
           image: "nginx"

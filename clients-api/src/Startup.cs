@@ -13,6 +13,11 @@ using Microsoft.Extensions.Logging;
 using ACG.EKS.Bookstore.Clients_API.Models;
 using ACG.EKS.Bookstore.Clients_API.Services;
 using Microsoft.Extensions.Options;
+using Amazon.XRay.Recorder.Core;
+using Amazon.XRay.Recorder.Handlers.AwsSdk;
+using Amazon.XRay.Recorder.Handlers.System.Net;
+using Amazon.XRay.Recorder.Core.Internal.Entities;
+using Amazon.DynamoDBv2;
 
 namespace ACG.EKS.Bookstore.Clients_API
 {
@@ -21,6 +26,8 @@ namespace ACG.EKS.Bookstore.Clients_API
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            AWSXRayRecorder.InitializeInstance(configuration: Configuration);
+            AWSSDKHandler.RegisterXRay<IAmazonDynamoDB>();
         }
 
         public IConfiguration Configuration { get; }
@@ -44,12 +51,12 @@ namespace ACG.EKS.Bookstore.Clients_API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
-            // app.UseHttpsRedirection();
 
             app.UseRouting();
 
@@ -59,6 +66,9 @@ namespace ACG.EKS.Bookstore.Clients_API
             {
                 endpoints.MapControllers();
             });
+            app.UseExceptionHandler("/Error");
+            app.UseXRay("Clients API");
+            app.UseStaticFiles();
         }
     }
 }
