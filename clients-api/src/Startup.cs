@@ -15,6 +15,9 @@ using ACG.EKS.Bookstore.Clients_API.Services;
 using Microsoft.Extensions.Options;
 using Amazon.XRay.Recorder.Core;
 using Amazon.XRay.Recorder.Handlers.AwsSdk;
+using Amazon.XRay.Recorder.Handlers.System.Net;
+using Amazon.XRay.Recorder.Core.Internal.Entities;
+using Amazon.DynamoDBv2;
 
 namespace ACG.EKS.Bookstore.Clients_API
 {
@@ -23,8 +26,8 @@ namespace ACG.EKS.Bookstore.Clients_API
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            AWSXRayRecorder.InitializeInstance(configuration: Configuration); // Inititalizing Configuration object with X-Ray recorder
-            AWSSDKHandler.RegisterXRayForAllServices(); // All AWS SDK requests will be traced
+            AWSXRayRecorder.InitializeInstance(configuration: Configuration);
+            AWSSDKHandler.RegisterXRay<IAmazonDynamoDB>();
         }
 
         public IConfiguration Configuration { get; }
@@ -63,8 +66,8 @@ namespace ACG.EKS.Bookstore.Clients_API
             {
                 endpoints.MapControllers();
             });
-            app.UseXRay("Clients API");
             app.UseExceptionHandler("/Error");
+            app.UseXRay("Clients API");
             app.UseStaticFiles();
         }
     }
