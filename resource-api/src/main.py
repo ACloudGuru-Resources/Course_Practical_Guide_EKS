@@ -16,7 +16,7 @@ dynamodb = boto3.resource('dynamodb')
 
 xray_recorder.configure(service='Resource API')#, plugins=('ECSPlugin'))
 XRayMiddleware(app, xray_recorder)
-# patch_all()
+patch_all()
 
 # DynamoDB: 
 @app.route("/create", methods=['POST'])
