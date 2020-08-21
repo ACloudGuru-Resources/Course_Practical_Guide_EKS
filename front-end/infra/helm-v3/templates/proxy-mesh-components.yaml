@@ -51,3 +51,11 @@ spec:
             - virtualNodeRef:
                 name: {{ template "acg-front-end.name" . }}-proxy
               weight: 1
+        # retryPolicy:
+        #   maxRetries: 10
+        #   perRetryTimeout:
+        #     unit: s
+        #     value: 2
+        #   httpRetryEvents:
+        #     - server-error
+        #     - gateway-error
