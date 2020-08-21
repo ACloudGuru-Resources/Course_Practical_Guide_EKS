@@ -1,0 +1,32 @@
+# Default values for acg-clients-api.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: mariomerco/clients-api
+  tag: latest
+  pullPolicy: Always
+
+service:
+  type: NodePort
+  port: 5003
+  name: clients-api-service
+
+resources: {}
+  # limits:
+  #  cpu: 100m
+  #  memory: 128Mi
+  # requests:
+  #  cpu: 100m
+  #  memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+aspnet:
+  environment: Development

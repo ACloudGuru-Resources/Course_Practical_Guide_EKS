@@ -1,6 +1,7 @@
 FROM ruby:2.6.3
 
-RUN bundle config --global frozen 1
+# RUN bundle config --delete frozen
+# RUN bundle config --global frozen 1
 
 WORKDIR /usr/src/app
 

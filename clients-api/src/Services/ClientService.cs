@@ -10,6 +10,10 @@ using Amazon.DynamoDBv2.DocumentModel;
 using Amazon.DynamoDBv2.DataModel;
 using System.Threading;
 using System.Threading.Tasks;
+using Amazon.XRay.Recorder.Core;
+using Amazon.XRay.Recorder.Handlers.AwsSdk;
+using Amazon.XRay.Recorder.Handlers.System.Net;
+using Amazon.XRay.Recorder.Core.Internal.Entities;
 
 namespace ACG.EKS.Bookstore.Clients_API.Services
 {
@@ -49,7 +53,6 @@ namespace ACG.EKS.Bookstore.Clients_API.Services
         
         public async Task<Client> Get(string id) =>
             await _context.LoadAsync<Client>(id);
-
 
         public async Task Update(Client newClientData) =>
             await _context.SaveAsync<Client>(newClientData);

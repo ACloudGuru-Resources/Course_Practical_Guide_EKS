@@ -6,6 +6,9 @@ ruby '2.6.3'
 # AWS SDK
 gem 'aws-sdk', '~> 3'
 
+# X-Ray
+gem 'aws-xray-sdk', require: ['aws-xray-sdk/facets/rails/railtie']
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.2', '>= 6.0.2.1'
 # Use Puma as the app server
@@ -37,3 +40,4 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+

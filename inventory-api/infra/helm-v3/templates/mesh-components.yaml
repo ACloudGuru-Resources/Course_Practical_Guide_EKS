@@ -1,0 +1,53 @@
+---
+apiVersion: appmesh.k8s.aws/v1beta2
+kind: VirtualNode
+metadata:
+  name: {{ template "acg-inventory-api.name" . }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  podSelector:
+    matchLabels:
+      app: {{ template "acg-inventory-api.name" . }}
+      release: {{ .Release.Name }}
+  listeners:
+    - portMapping:
+        port: {{ .Values.service.port }}
+        protocol: http
+  serviceDiscovery:
+    dns:
+      hostname: {{ .Values.service.name }}.{{ .Release.Namespace }}.svc.cluster.local
+
+---
+apiVersion: appmesh.k8s.aws/v1beta2
+kind: VirtualService
+metadata:
+  name: {{ .Values.service.name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  awsName: {{ .Values.service.name }}.{{ .Release.Namespace }}.svc.cluster.local
+  provider:
+    virtualRouter:
+      virtualRouterRef:
+        name: {{ template "acg-inventory-api.name" . }}-virtual-router
+
+--- 
+apiVersion: appmesh.k8s.aws/v1beta2
+kind: VirtualRouter
+metadata:
+  name: {{ template "acg-inventory-api.name" . }}-virtual-router
+  namespace: {{ .Release.Namespace }}
+spec:
+  listeners:
+    - portMapping:
+        port: {{ .Values.service.port }}
+        protocol: http
+  routes:
+    - name: {{ template "acg-inventory-api.name" . }}-route
+      httpRoute:
+        match:
+          prefix: /
+        action:
+          weightedTargets:
+            - virtualNodeRef:
+                name: {{ template "acg-inventory-api.name" . }}
+              weight: 1

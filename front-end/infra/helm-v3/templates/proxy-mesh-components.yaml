@@ -1,0 +1,61 @@
+---
+apiVersion: appmesh.k8s.aws/v1beta2
+kind: VirtualNode
+metadata:
+  name: {{ template "acg-front-end.name" . }}-proxy
+  namespace: {{ .Release.Namespace }}
+spec:
+  podSelector:
+    matchLabels:
+      app: {{ template "acg-front-end.name" . }}-proxy
+      release: {{ .Release.Name }}
+  listeners:
+    - portMapping:
+        port: {{ .Values.service.port }}
+        protocol: http
+  serviceDiscovery:
+    dns:
+      hostname: {{ .Values.service.name }}-proxy.{{ .Release.Namespace }}.svc.cluster.local
+
+---
+apiVersion: appmesh.k8s.aws/v1beta2
+kind: VirtualService
+metadata:
+  name: {{ .Values.service.name }}-proxy
+  namespace: {{ .Release.Namespace }}
+spec:
+  awsName: {{ .Values.service.name }}-proxy.{{ .Release.Namespace }}.svc.cluster.local
+  provider:
+    virtualRouter:
+      virtualRouterRef:
+        name: {{ template "acg-front-end.name" . }}-proxy-virtual-router
+
+--- 
+apiVersion: appmesh.k8s.aws/v1beta2
+kind: VirtualRouter
+metadata:
+  name: {{ template "acg-front-end.name" . }}-proxy-virtual-router
+  namespace: {{ .Release.Namespace }}
+spec:
+  listeners:
+    - portMapping:
+        port: {{ .Values.service.port }}
+        protocol: http
+  routes:
+    - name: {{ template "acg-front-end.name" . }}-proxy-route
+      httpRoute:
+        match:
+          prefix: /
+        action:
+          weightedTargets:
+            - virtualNodeRef:
+                name: {{ template "acg-front-end.name" . }}-proxy
+              weight: 1
+        # retryPolicy:
+        #   maxRetries: 10
+        #   perRetryTimeout:
+        #     unit: s
+        #     value: 2
+        #   httpRetryEvents:
+        #     - server-error
+        #     - gateway-error
