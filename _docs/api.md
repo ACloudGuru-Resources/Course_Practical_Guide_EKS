@@ -8,7 +8,7 @@
 * [Clients API](#clients-api)
 
   * [Create](#1-create)
-  * [Delete (not available yet)](#2-delete-(not-available-yet))
+  * [Delete (not available)](#2-delete-(not-available-yet))
   * [Get](#3-get)
   * [List](#4-list)
   * [Update](#5-update)
@@ -16,7 +16,7 @@
 * [Inventory API](#inventory-api)
 
   * [List by Resource](#1-list-by-resource)
-  * [List by Resource Unavailable](#2-list-by-resource-unavailable)
+  * [List by Resource Unavailable (not available)](#2-list-by-resource-unavailable)
   * [Register](#3-register)
   * [Set Availability](#4-set-availability)
   * [Summary](#5-summary)
