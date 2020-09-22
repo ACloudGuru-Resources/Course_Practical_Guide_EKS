@@ -5,6 +5,6 @@ In this repository you will find all the assets required for the course `A Pract
 
 ## Bookstore application
 
-This solution has being built for for explaining all the concepts in this course. It is complete enough for covering a real case of microservices running on EKS and integrating with other AWS Services.
+This solution has been built for for explaining all the concepts in this course. It is complete enough for covering a real case of microservices running on EKS and integrating with other AWS Services.
 
 > You can find in [here](_docs/api.md) the documentation of the APIs.
