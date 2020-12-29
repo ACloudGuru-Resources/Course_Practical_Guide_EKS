@@ -1,3 +1,5 @@
+# NOTE: When installing, please, update this file with the correct subdomain!
+
 ingress:
   internal:
     annotations: 
