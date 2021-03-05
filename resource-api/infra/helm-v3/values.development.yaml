@@ -1,3 +1,6 @@
 image:
   repository: 750796802028.dkr.ecr.us-east-2.amazonaws.com/bookstore.resources-api
   tag: latest
+
+aws:
+  xray_enabled: "true"
