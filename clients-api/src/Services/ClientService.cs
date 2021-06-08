@@ -24,7 +24,7 @@ namespace ACG.EKS.Bookstore.Clients_API.Services
 
         public ClientService(IDynamoDBSettings settings) 
         {
-            _dynamoDBClient = new AmazonDynamoDBClient(RegionEndpoint.USEast2);
+            _dynamoDBClient = new AmazonDynamoDBClient();
             var config = new DynamoDBContextConfig { TableNamePrefix = settings.Prefix };
             _context = new DynamoDBContext(_dynamoDBClient, config);
         }
