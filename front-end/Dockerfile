@@ -1,10 +1,10 @@
-FROM node:carbon-alpine
-WORKDIR /opt/forms
-COPY package*.json ./
-RUN npm install
-COPY . ./
+FROM public.ecr.aws/bitnami/node:8 as builder
+WORKDIR /app
+COPY package*.json /app/
+RUN npm --unsafe-perm install
+COPY . /app
 RUN npm run build
 
-FROM nginx:1.15-alpine
-COPY --from=0 /opt/forms/dist /usr/share/nginx/html
+FROM public.ecr.aws/nginx/nginx:1.18-alpine
+COPY --from=builder /app/dist /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf

@@ -1,8 +1,8 @@
-FROM node:10
-WORKDIR /usr/src/app
-COPY package*.json ./
+FROM public.ecr.aws/bitnami/node:10-prod
+WORKDIR /app
+COPY package*.json /app/
 
 RUN npm install
-COPY . .
+COPY . /app
 EXPOSE 5001
 CMD node app.js
