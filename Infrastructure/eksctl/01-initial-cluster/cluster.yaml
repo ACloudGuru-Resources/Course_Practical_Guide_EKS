@@ -11,6 +11,6 @@ vpc:
 
 nodeGroups:
   - name: eks-node-group
-    instanceType: t2.micro
+    instanceType: t3.micro
     desiredCapacity: 3
     privateNetworking: true
