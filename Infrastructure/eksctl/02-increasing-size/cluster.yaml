@@ -11,6 +11,6 @@ vpc:
 
 nodeGroups:
   - name: eks-node-group-v2
-    instanceType: t2.medium
+    instanceType: t3.medium
     desiredCapacity: 3
     privateNetworking: true
