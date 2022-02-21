@@ -1,5 +1,6 @@
-flask == 1.1.1
+flask == 1.1.4
 gunicorn == 20.0.0
 requests == 2.20.0
 boto3 == 1.10.46
+markupsafe == 2.0.1
 aws_xray_sdk
