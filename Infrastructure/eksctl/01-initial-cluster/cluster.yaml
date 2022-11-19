@@ -13,7 +13,7 @@ vpc:
 
 nodeGroups:
   - name: eks-node-group
-    instanceType: t3.small
+    instanceType: t3.medium
     desiredCapacity: 3
     privateNetworking: true
     volumeSize: 30
