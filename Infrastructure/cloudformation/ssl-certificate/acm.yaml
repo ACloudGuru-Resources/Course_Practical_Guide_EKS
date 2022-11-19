@@ -11,13 +11,12 @@ Resources:
     Type: AWS::CertificateManager::Certificate
     Properties:
       DomainName: !Sub "*.${DomainName}"
-      SubjectAlternativeNames: !Ref DomainName
+      SubjectAlternativeNames: 
+        - !Ref DomainName
       ValidationMethod: DNS
       DomainValidationOptions:
         - DomainName: !Ref DomainName
           HostedZoneId: !Ref HostedZoneId
       Tags:
-        - Key: Environment
-          Value: !Ref Environment
         - Key: Name
           Value: !Ref DomainName
