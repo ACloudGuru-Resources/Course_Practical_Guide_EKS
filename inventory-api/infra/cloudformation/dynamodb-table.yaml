@@ -17,5 +17,4 @@ Resources:
       ProvisionedThroughput:
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5
-      TableName:
-        Fn::Sub: "${Namespace}-inventory"
+      TableName: !Sub "${Namespace}-inventory"

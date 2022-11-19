@@ -22,11 +22,9 @@ Resources:
             - dynamodb:Query
             - dynamodb:UpdateItem
           Resource:
-            - Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${Namespace}-resources
-            - Fn::Sub: arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${AWS::AccountId}/index/*
-      ManagedPolicyName:
-        Fn::Sub: "${Namespace}-ResourceApiPolicy"
+            - !Sub arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${Namespace}-resources
+            - !Sub arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${AWS::AccountId}/index/*
+      ManagedPolicyName: !Sub "${Namespace}-ResourceApiPolicy"
 Outputs:
   IamPolicyArn:
-    Value:
-      Ref: IamPolicy
+    Value: !Ref IamPolicy
