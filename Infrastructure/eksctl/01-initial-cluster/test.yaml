@@ -1,0 +1,19 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: testing
+  region: us-east-1
+  version: "1.24"
+
+vpc:
+  cidr: 10.0.0.0/16
+  nat:
+    gateway: HighlyAvailable
+
+nodeGroups:
+  - name: eks-node-group
+    instanceType: t3.medium
+    desiredCapacity: 3
+    privateNetworking: true
+    volumeSize: 30
