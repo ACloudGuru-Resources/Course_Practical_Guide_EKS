@@ -2,9 +2,9 @@ apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 
 metadata:
-  name: eks-acg
+  name: testing
   region: us-east-1
-  version: "1.23"
+  version: "1.25"
 
 vpc:
   cidr: 10.0.0.0/16
