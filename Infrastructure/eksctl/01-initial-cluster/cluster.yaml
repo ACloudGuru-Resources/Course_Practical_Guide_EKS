@@ -4,7 +4,7 @@ kind: ClusterConfig
 metadata:
   name: testing
   region: us-east-1
-  version: "1.25"
+  version: "1.24"
 
 vpc:
   cidr: 10.0.0.0/16
