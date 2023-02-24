@@ -3,6 +3,7 @@
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
+baseDomain: sample.com
 
 image:
   repository: mariomerco/resource-api

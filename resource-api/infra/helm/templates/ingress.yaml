@@ -7,32 +7,28 @@ metadata:
     chart: {{ .Chart.Name }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
-{{- with .Values.ingress.internal.annotations }}
   annotations:
     kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internal
     alb.ingress.kubernetes.io/actions.redirect: "{\"Type\": \"redirect\", \"RedirectConfig\": {\"Protocol\": \"HTTPS\", \"Port\": \"443\", \"StatusCode\": \"HTTP_301\"}}"
     alb.ingress.kubernetes.io/listen-ports: "[{\"HTTP\":80,\"HTTPS\": 443}]"
     alb.ingress.kubernetes.io/load-balancer-attributes: "idle_timeout.timeout_seconds=360"
-{{- end }}
 spec:
   rules:
-  {{- range .Values.ingress.internal.hosts }}
-    - host: {{ .hostname }}
+    - host: resource-api.{{ .Values.baseDomain }}
       http:
         paths:
-          - path: {{ .path | default "/*" }}
+          - path: "/*"
             pathType: ImplementationSpecific
             backend:
               service: 
                 name: redirect
                 port: 
                   name: use-annotation
-          - path: {{ .path | default "/*" }}
+          - path: "/*"
             pathType: ImplementationSpecific
             backend:
               service: 
-                name: {{ .serviceName }}
+                name: {{ .Values.service.name }}
                 port:
                   number:  {{ .port }}
-  {{- end }}
