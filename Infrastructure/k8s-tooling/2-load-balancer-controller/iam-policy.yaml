@@ -176,4 +176,4 @@ Resources:
             Resource: '*'
 Outputs:
   IamPolicyArn:
-    Value: !Sub 'arn:aws:iam::${AWS::AccountID}:policy/${iamPolicy}'
+    Value: !Sub 'arn:aws:iam::${AWS::AccountId}:policy/${iamPolicy}'
