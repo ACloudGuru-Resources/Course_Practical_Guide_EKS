@@ -3,5 +3,5 @@ base_domain=$(aws route53 list-hosted-zones --query "HostedZones[0].Name" --outp
 helm upgrade --install \
     --namespace development \
     --create-namespace \
-    --set baseDomain=base_domain \
+    --set baseDomain=${base_domain} \
     resource-api-development .
