@@ -1,8 +1,9 @@
 helm repo add eks https://aws.github.io/eks-charts
-helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
+helm upgrade --install \
   -n kube-system \
   --set clusterName=eks-acg \
-  --set serviceAccount.create=true
+  --set serviceAccount.create=true \
+  aws-load-balancer-controller eks/aws-load-balancer-controller
 
 aws cloudformation deploy \
     --stack-name aws-load-balancer-iam-policy \

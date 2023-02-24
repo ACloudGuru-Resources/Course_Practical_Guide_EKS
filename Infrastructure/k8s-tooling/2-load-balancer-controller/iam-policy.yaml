@@ -2,9 +2,9 @@ AWSTemplateFormatVersion: '2010-09-09'
 Description: AWS Load Balancer Controller IAM policy
 Resources:
   iamPolicy:
-    Type: AWS::IAM::Policy
+    Type: AWS::IAM::ManagedPolicy
     Properties:
-      PolicyName: AWS-LoadBalancerControllerPolicy
+      ManagedPolicyName: AWS-LoadBalancerControllerPolicy
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
