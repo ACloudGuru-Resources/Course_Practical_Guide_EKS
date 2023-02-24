@@ -1,5 +1,7 @@
-echo "********* CHAPTER 2 - STARTED AT $(date)"
-echo "This could take around 30 minutes"
+echo "***************************************************"
+echo "********* CHAPTER 2 - STARTED AT $(date) **********"
+echo "***************************************************"
+echo "--- This could take around 35 minutes"
 #  Create the DynamoDB Tables
     ( cd ./clients-api/infra/cloudformation && ./create-dynamodb-table.sh development )
     ( cd ./inventory-api/infra/cloudformation && ./create-dynamodb-table.sh development )
@@ -24,4 +26,6 @@ echo "This could take around 30 minutes"
 # Create SSL Certfiicate in ACM
      ( cd ./Infrastructure/cloudformation/ssl-certificate && ./create.sh )
 
-echo "********* CHAPTER 2 - FINISHED AT $(date)"
+echo "***************************************************"
+echo "********* CHAPTER 2 - FINISHED AT $(date) *********"
+echo "***************************************************"
