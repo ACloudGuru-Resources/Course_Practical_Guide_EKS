@@ -1,1 +1,1 @@
-helm upgrade --install --namespace development resource-api-development .
+helm upgrade --install --namespace development --create-namespace resource-api-development .

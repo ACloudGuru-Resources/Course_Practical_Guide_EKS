@@ -12,7 +12,8 @@ image:
 
 service:
   type: NodePort
-  port: 5000
+  containerPort: 5000
+  servicePort: 80
   name: resource-api-service
 
 aws:

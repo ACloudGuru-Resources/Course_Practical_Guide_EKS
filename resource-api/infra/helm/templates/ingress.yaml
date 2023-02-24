@@ -31,4 +31,4 @@ spec:
               service: 
                 name: {{ .Values.service.name }}
                 port:
-                  number:  {{ .port }}
+                  number:  {{ .Values.service.servicePort }}
