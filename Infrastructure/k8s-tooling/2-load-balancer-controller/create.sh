@@ -8,4 +8,5 @@ helm upgrade --install \
 
 aws cloudformation deploy \
     --stack-name aws-load-balancer-iam-policy \
-    --template-file iam-policy.yaml
+    --template-file iam-policy.yaml \
+    --capabilities CAPABILITY_IAM
