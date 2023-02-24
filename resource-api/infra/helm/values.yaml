@@ -15,6 +15,7 @@ service:
   containerPort: 5000
   servicePort: 80
   name: resource-api-service
+  scheme: internet-facing
 
 aws:
   region: us-east-2
