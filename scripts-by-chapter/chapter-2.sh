@@ -26,7 +26,12 @@ echo "--- This could take around 35 minutes"
 
 
 # Create SSL Certfiicate in ACM
-     ( cd ./Infrastructure/cloudformation/ssl-certificate && ./create.sh )
+    ( cd ./Infrastructure/cloudformation/ssl-certificate && ./create.sh )
+
+
+# Installing the applications
+    ( cd ./resource-api/infra/helm && ./create.sh )
+
 
 echo "***************************************************"
 echo "********* CHAPTER 2 - FINISHED AT $(date) *********"
