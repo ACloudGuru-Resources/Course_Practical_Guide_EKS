@@ -21,7 +21,7 @@ echo "--- This could take around 35 minutes"
 
 # Installing Load Balancer Controller
     ./Infrastructure/k8s-tooling/2-load-balancer-controller/create.sh
-    aws iam attach-role-policy --role-name ${nodegroup_iam_role} --policy-arn arn:aws:iam::aws:policy/ElasticLoadBalancingFullAccess
+    
 
 # Create SSL Certfiicate in ACM
      ( cd ./Infrastructure/cloudformation/ssl-certificate && ./create.sh )
