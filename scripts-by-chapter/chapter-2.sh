@@ -1,4 +1,5 @@
 echo "********* CHAPTER 2 - STARTED AT $(date)"
+echo "This could take around 30 minutes"
 #  Create the DynamoDB Tables
     ( cd ./clients-api/infra/cloudformation && ./create-dynamodb-table.sh development )
     ( cd ./inventory-api/infra/cloudformation && ./create-dynamodb-table.sh development )
@@ -19,5 +20,8 @@ echo "********* CHAPTER 2 - STARTED AT $(date)"
 # Installing Load Balancer Controller
     ./Infrastructure/k8s-tooling/2-load-balancer-controller/create.sh
     aws iam attach-role-policy --role-name ${nodegroup_iam_role} --policy-arn arn:aws:iam::aws:policy/ElasticLoadBalancingFullAccess
+
+# Create SSL Certfiicate in ACM
+     ( cd ./Infrastructure/cloudformation/ssl-certificate && ./create.sh )
 
 echo "********* CHAPTER 2 - FINISHED AT $(date)"
