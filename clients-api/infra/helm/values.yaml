@@ -5,6 +5,9 @@
 replicaCount: 1
 baseDomain: sample.com
 
+aws:
+  region: us-east-1
+
 image:
   repository: mariomerco/clients-api
   tag: latest

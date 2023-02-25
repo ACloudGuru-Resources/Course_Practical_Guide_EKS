@@ -31,6 +31,8 @@ spec:
           env:
             - name: ASPNETCORE_ENVIRONMENT
               value: {{ .Values.aspnet.environment }}
+            - name: AWS_DEFAULT_REGION
+              value: {{ .Values.aws.region}}
           resources:
 {{ toYaml .Values.resources | indent 12 }}
     {{- with .Values.nodeSelector }}
