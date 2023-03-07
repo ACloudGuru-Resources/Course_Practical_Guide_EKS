@@ -4,4 +4,4 @@ helm upgrade --install \
     --namespace development \
     --create-namespace \
     --set baseDomain=${base_domain} \
-    renting-api-development --debug --dry-run .
+    renting-api-development .
