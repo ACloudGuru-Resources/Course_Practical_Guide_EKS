@@ -3,6 +3,7 @@
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
+baseDomain: sample.com
 
 image:
   repository: mariomerco/front-end
@@ -11,8 +12,10 @@ image:
 
 service:
   type: NodePort
-  port: 80
+  containerPort: 80
+  servicePort: 80
   name: front-end-service
+  scheme: internet-facing
 
 resources: {}
   # limits:

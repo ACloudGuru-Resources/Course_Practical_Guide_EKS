@@ -34,6 +34,7 @@ echo "--- This could take around 35 minutes"
     ( cd ./clients-api/infra/helm && ./create.sh )
     ( cd ./inventory-api/infra/helm && ./create.sh )
     ( cd ./renting-api/infra/helm && ./create.sh )
+    ( cd ./front-end/infra/helm && ./create.sh )
 
 
 echo "***************************************************"
