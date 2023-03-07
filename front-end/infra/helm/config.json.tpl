@@ -1,10 +1,10 @@
 {
     "config": {
         "api": {
-            "resourceApi": "{{ .Values.api.url }}/resources-api",
-            "inventoryApi": "{{ .Values.api.url }}/inventory-api",
-            "clientApi": "{{ .Values.api.url }}/clients-api",
-            "rentingApi": "{{ .Values.api.url }}/renting-api"
+            "resourceApi": "https://api.{{ .Values.baseDomain }}/resources-api",
+            "inventoryApi": "https://api.{{ .Values.baseDomain }}/inventory-api",
+            "clientApi": "https://api.{{ .Values.baseDomain }}/clients-api",
+            "rentingApi": "https://api.{{ .Values.baseDomain }}/renting-api"
         }
     }
 }
