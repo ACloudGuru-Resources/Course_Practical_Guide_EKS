@@ -4,4 +4,4 @@ helm upgrade --install \
     --namespace development \
     --create-namespace \
     --set baseDomain=${base_domain} \
-    inventory-api-development --debug --dry-run .
+    inventory-api-development .
