@@ -31,6 +31,8 @@ echo "--- This could take around 35 minutes"
 
 # Installing the applications
     ( cd ./resource-api/infra/helm && ./create.sh )
+    ( cd ./clients-api/infra/helm && ./create.sh )
+    ( cd ./inventory-api/infra/helm && ./create.sh )
 
 
 echo "***************************************************"
