@@ -3,6 +3,7 @@
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
+baseDomain: sample.com
 
 aws:
   region: us-east-1
@@ -14,8 +15,13 @@ image:
 
 service:
   type: NodePort
-  port: 5001
+  containerPort: 5001
   name: inventory-api-service
+  scheme: internet-facing
+  servicePort: 80
+
+aws:
+  region: us-east-1
 
 resources: {}
   # limits:

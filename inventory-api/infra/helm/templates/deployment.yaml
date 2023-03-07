@@ -26,13 +26,15 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: {{ .Values.service.port }}
+              containerPort: {{ .Values.service.containerPort }}
               protocol: TCP
           env:
             - name: DYNAMODB_TABLE 
               value: {{ .Release.Namespace }}-inventory
             - name: RESOURCE_API_ENDPOINT
               value: http://resource-api-service
+            - name: AWS_DEFAULT_REGION
+              value: {{ .Values.aws.region}}
           resources:
 {{ toYaml .Values.resources | indent 12 }}
     {{- with .Values.nodeSelector }}
