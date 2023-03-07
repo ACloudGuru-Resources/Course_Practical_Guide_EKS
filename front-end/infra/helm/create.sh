@@ -13,4 +13,4 @@ helm upgrade --install \
     --create-namespace \
     --set baseDomain=${base_domain} \
     -f values.yaml -f values.${namespace}.yaml \
-    front-end-development --debug --dry-run .
+    front-end-development .
