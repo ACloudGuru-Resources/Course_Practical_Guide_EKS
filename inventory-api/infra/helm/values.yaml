@@ -4,6 +4,9 @@
 
 replicaCount: 1
 
+aws:
+  region: us-east-1
+  
 image:
   repository: mariomerco/inventory-api
   tag: latest
