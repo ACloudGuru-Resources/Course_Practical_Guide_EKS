@@ -16,7 +16,7 @@ metadata:
     alb.ingress.kubernetes.io/group.name: {{ .Release.Namespace }}
 spec:
   rules:
-    - host: resource-api.{{ .Values.baseDomain }}
+    - host: renting-api.{{ .Values.baseDomain }}
       http:
         paths:
           - path: "/*"
