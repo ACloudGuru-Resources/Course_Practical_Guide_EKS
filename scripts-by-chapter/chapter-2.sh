@@ -36,6 +36,12 @@ echo "--- This could take around 35 minutes"
     ( cd ./renting-api/infra/helm && ./create.sh )
     ( cd ./front-end/infra/helm && ./create.sh )
 
+# Here's your application
+
+echo "************************** HERE IS YOUR APP!!! **************************"
+kubectl get ingress -n development front-end-development-ingress | grep bookstore | awk '{print $3}'
+echo "**************************"
+
 
 echo "***************************************************"
 echo "********* CHAPTER 2 - FINISHED AT $(date) *********"
