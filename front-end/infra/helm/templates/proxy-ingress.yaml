@@ -30,6 +30,6 @@ spec:
             pathType: ImplementationSpecific
             backend:
               service: 
-                name: {{ .Values.service.name }}
+                name: {{ .Values.service.name }}-proxy
                 port:
                   number:  {{ .Values.service.servicePort }}
