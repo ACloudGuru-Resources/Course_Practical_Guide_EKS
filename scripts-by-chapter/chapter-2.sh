@@ -8,8 +8,7 @@ echo "--- This could take around 35 minutes"
     ( cd ./renting-api/infra/cloudformation && ./create-dynamodb-table.sh development )
     ( cd ./resource-api/infra/cloudformation && ./create-dynamodb-table.sh development )
 
-# Create the Kubernetes Cluster
-    eksctl create cluster -f Infrastructure/eksctl/01-initial-cluster/cluster.yaml
+# Getting NodeGroup IAM Role from Kubernetes Cluster
     nodegroup_iam_role=$(aws cloudformation list-exports --query "Exports[?contains(Name, 'nodegroup-eks-node-group::InstanceRoleARN')].Value" --output text | xargs | cut -d "/" -f 2)
 
 # Adding DynamoDB Permissions to the node
@@ -43,6 +42,6 @@ kubectl get ingress -n development front-end-development-ingress | grep bookstor
 echo "**************************"
 
 
-echo "***************************************************"
-echo "********* CHAPTER 2 - FINISHED AT $(date) *********"
-echo "***************************************************"
+echo "*************************************************************"
+echo "********* READY TO CHAPTER 3! - FINISHED AT $(date) *********"
+echo "*************************************************************"
