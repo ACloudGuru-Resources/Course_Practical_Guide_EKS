@@ -33,7 +33,9 @@ spec:
             - name: DYNAMODB_TABLE 
               value: {{ .Release.Namespace }}-resources
             - name: AWS_DEFAULT_REGION
-              value: {{ .Values.aws.region}}
+              value: {{ .Values.aws.region }}
+            - name: AWS_XRAY_SDK_ENABLED
+              value: "{{ .Values.aws.xray_enabled }}"
           resources:
 {{ toYaml .Values.resources | indent 12 }}
     {{- with .Values.nodeSelector }}
