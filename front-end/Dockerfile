@@ -1,7 +1,16 @@
+# Use a base image that includes Python
 FROM node:carbon-alpine
+
 WORKDIR /opt/forms
 COPY package*.json ./
-RUN npm install
+
+# Install Python and other dependencies
+RUN apk add --no-cache python2 g++ make
+
+# Clear npm cache and install dependencies
+RUN npm cache clean --force
+RUN npm install --loglevel verbose
+
 COPY . ./
 RUN npm run build
 

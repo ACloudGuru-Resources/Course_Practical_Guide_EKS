@@ -1,9 +1,15 @@
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build-env
+
+# Update and install SSL certificates
+RUN apt-get update && apt-get install -y ca-certificates
+
 COPY . /app
 WORKDIR /app
-RUN dotnet restore
-RUN dotnet publish -c Release -o publish
 
+# Run dotnet restore with verbose output
+RUN dotnet restore --verbosity detailed
+
+RUN dotnet publish -c Release -o publish
 
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
 WORKDIR /app
