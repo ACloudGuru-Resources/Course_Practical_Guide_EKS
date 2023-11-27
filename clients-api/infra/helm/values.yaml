@@ -3,6 +3,10 @@
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
+baseDomain: sample.com
+
+aws:
+  region: us-east-1
 
 image:
   repository: mariomerco/clients-api
@@ -11,8 +15,10 @@ image:
 
 service:
   type: NodePort
-  port: 5003
+  containerPort: 5003
+  servicePort: 80
   name: clients-api-service
+  scheme: internet-facing
 
 resources: {}
   # limits:

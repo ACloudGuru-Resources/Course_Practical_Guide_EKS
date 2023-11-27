@@ -26,11 +26,13 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: {{ .Values.service.port }}
+              containerPort: {{ .Values.service.containerPort }}
               protocol: TCP
           env:
             - name: ASPNETCORE_ENVIRONMENT
               value: {{ .Values.aspnet.environment }}
+            - name: AWS_DEFAULT_REGION
+              value: {{ .Values.aws.region}}
           resources:
 {{ toYaml .Values.resources | indent 12 }}
     {{- with .Values.nodeSelector }}

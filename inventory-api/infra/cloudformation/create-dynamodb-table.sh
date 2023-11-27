@@ -8,6 +8,6 @@ fi
 
 aws cloudformation deploy \
     --stack-name ${namespace}-inventory-api-dynamodb-table \
-    --template-file dynamodb-table.json \
+    --template-file dynamodb-table.yaml \
     --parameter-overrides \
         Namespace=${namespace}

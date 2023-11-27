@@ -1,0 +1,22 @@
+Description: Hosted Zone and ACM Certificate
+Parameters:
+  DomainName:
+    Description: The base Domain Name
+    Type: String
+  HostedZoneId:
+    Description: The Hosted ID to validate the certificate
+    Type: String
+Resources:
+  Certificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: !Sub "*.${DomainName}"
+      SubjectAlternativeNames: 
+        - !Ref DomainName
+      ValidationMethod: DNS
+      DomainValidationOptions:
+        - DomainName: !Ref DomainName
+          HostedZoneId: !Ref HostedZoneId
+      Tags:
+        - Key: Name
+          Value: !Ref DomainName

@@ -8,9 +8,12 @@ metadata:
 
 vpc:
   cidr: 10.0.0.0/16
+  nat:
+    gateway: HighlyAvailable
 
 nodeGroups:
   - name: eks-node-group
-    instanceType: t3.micro
+    instanceType: t3.medium
     desiredCapacity: 3
     privateNetworking: true
+    volumeSize: 30
