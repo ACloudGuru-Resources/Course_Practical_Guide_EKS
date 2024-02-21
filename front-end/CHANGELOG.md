@@ -1,5 +1,6 @@
 ## [1.5.0] - 2018-10-04
 ### Changes
+
 - update to Angular 6
 - added online documentation 
 ## [1.4.0] - 2017-08-28

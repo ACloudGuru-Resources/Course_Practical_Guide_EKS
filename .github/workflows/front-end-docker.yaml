@@ -32,7 +32,7 @@ jobs:
         TAG=`git log -1 --pretty=format:%H | cut -c -9`
         echo "tag=$TAG"  >> $GITHUB_OUTPUT
   build-only:
-    if:  startsWith(github.action_ref , 'refs/heads/feature/')
+    if:  startsWith(github.ref , 'refs/heads/feature/')
     needs:
     - env-tag
     runs-on: ubuntu-latest
