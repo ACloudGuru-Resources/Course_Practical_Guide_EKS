@@ -7,6 +7,7 @@
 - added angular-cli
 - update to Angular 4
 
+
 ## [v1.3.0] 2017-08-28
 ### skipped for sync with Angular 4 version convention
 
