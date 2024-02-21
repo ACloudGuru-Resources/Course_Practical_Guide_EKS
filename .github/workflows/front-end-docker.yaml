@@ -58,7 +58,7 @@ jobs:
         tags: ${{ steps.login-ecr.outputs.registry }}/${{env.REPOSITORY_NAME}}:${{ needs.env-tag.outputs.imageTag }}
 
   build-and-push:
-    if: github.event_name == 'push' &&  github.action_ref =='refs/heads/master'
+    if: github.event_name == 'push' &&  github.ref =='refs/heads/master'
     needs:
         - env-tag
     runs-on: ubuntu-latest
