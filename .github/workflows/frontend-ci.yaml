@@ -31,7 +31,10 @@ jobs:
           ${{ runner.os }}-
     - name: Install Dependancies
       run: npm install
+      working-directory: ./front-end
     - name: Building Application
       run: npm run build --if-present
+      working-directory: ./front-end
     - name: Test The Application
       run: npm test
+      working-directory: ./front-end
