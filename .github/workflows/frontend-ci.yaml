@@ -5,7 +5,7 @@ on:
     branches:
     - 'feature/**'
     paths:
-    - './front-end/**'
+    - 'front-end/**'
 jobs:
   BuildAndTesting:
     runs-on: ubuntu-latest
