@@ -1,0 +1,28 @@
+name: frontend-docker
+run-name: It is a Dockerization workflow for Frontend EKS/ECS Project 🚀
+on:
+  push:
+    branches:
+    - 'master'
+    - 'feature/**'
+    # paths:
+    # - 'front-end/**'
+env:
+  AWS_REGION: us-east-1
+jobs:
+  Build:
+   runs-on: ubuntu-latest
+   steps:
+
+   - uses: actions/checkout@v3
+   - name: configure aws credentials
+     uses: aws-actions/configure-aws-credentials@v1.7.0
+     with:
+       role-to-assume: arn:aws:iam::464498973176:role/github-action-sysadmin
+       role-session-name: GitHub_to_AWS_via_FederatedOIDC
+       aws-region: ${{ env.AWS_REGION }}
+#    - name: Login to Docker Hub
+#      uses: docker/login-action@v3
+#      with:
+#        username: ${{ secrets.DOCKERHUB_USERNAME }}
+#        password: ${{ secrets.DOCKERHUB_TOKEN }}
