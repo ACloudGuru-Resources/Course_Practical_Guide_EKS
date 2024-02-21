@@ -4,6 +4,7 @@
 - added online documentation 
 
 
+
 ## [1.4.0] - 2017-08-28
 ### Changes for Angular 4
 - added angular-cli
