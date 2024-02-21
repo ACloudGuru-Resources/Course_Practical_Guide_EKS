@@ -18,7 +18,7 @@ jobs:
         node-version: '16.x'
     - uses: actions/setup-python@v5
       with:
-        python-version: '2.6' 
+        python-version: '"3.0.1' 
     - name: Cache node modules
       id: cache-npm
       uses: actions/cache@v3
