@@ -14,7 +14,7 @@ on:
     - 'front-end/**'
 permissions:
   id-token: write   # This is required for requesting the JWT
-  contents: read,write    # This is required for actions/checkout
+  contents: write    # This is required for actions/checkout
 env:
   AWS_REGION: us-east-1
   REPOSITORY_NAME: front-end
