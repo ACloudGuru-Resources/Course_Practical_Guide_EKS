@@ -58,16 +58,16 @@ jobs:
       uses: aquasecurity/trivy-action@master
       with:
         image-ref: ${{ steps.login-ecr.outputs.registry }}/${{env.REPOSITORY_NAME}}:${{ needs.env-tag.outputs.imageTag }}
-        format: 'sarif'
+        format: 'table'
         exit-code: '1'
         ignore-unfixed: true
         vuln-type: 'os,library'
         severity: 'CRITICAL,HIGH'
-        output: 'trivy-results.sarif'
-    - name: Upload Trivy scan results to GitHub Security tab
-      uses: github/codeql-action/upload-sarif@v2
-      with:
-        sarif_file: 'trivy-results.sarif'
+   #     output: 'trivy-results.sarif'
+    # - name: Upload Trivy scan results to GitHub Security tab
+    #   uses: github/codeql-action/upload-sarif@v2
+    #   with:
+    #     sarif_file: 'trivy-results.sarif'
 
   build-and-push:
     if: github.event_name == 'push' &&  github.ref =='refs/heads/master'
