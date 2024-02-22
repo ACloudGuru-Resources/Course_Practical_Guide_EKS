@@ -15,6 +15,7 @@ on:
 permissions:
   id-token: write   # This is required for requesting the JWT
   contents: read    # This is required for actions/checkout
+  contents: write
 env:
   AWS_REGION: us-east-1
   REPOSITORY_NAME: front-end
@@ -64,6 +65,7 @@ jobs:
         vuln-type: 'os,library'
         severity: 'CRITICAL,HIGH'
         output: 'trivy-results.sarif'
+        
     - name: Upload Trivy scan results to GitHub Security tab
       uses: github/codeql-action/upload-sarif@v3
       with:
