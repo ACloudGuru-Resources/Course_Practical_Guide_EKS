@@ -1,3 +1,5 @@
+> This course has been retired! There's an updated version of the same course in **Pluralsight/A Cloud Guru** here: https://www.pluralsight.com/cloud-guru/courses/hands-on-with-amazon-eks
+
 # A Practical Guide to EKS
 
 In this repository you will find all the assets required for the course `A Practical Guide to Amazon EKS`, by A Cloud Guru.
