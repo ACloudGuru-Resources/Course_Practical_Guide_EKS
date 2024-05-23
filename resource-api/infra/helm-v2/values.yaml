@@ -16,6 +16,7 @@ service:
 
 aws:
   region: us-east-2
+  xray_enabled: "false"
 
 resources: {}
   # limits:
